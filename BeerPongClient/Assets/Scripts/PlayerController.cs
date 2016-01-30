@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 		playEnabled = true;
 		myPoints = 0;
 
-        //UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
+        UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
         EnablePlay();
 	}
 	
