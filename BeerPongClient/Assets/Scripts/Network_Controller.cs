@@ -28,15 +28,12 @@ public class Network_Controller : MonoBehaviour {
     [SerializeField]
     public GameObject ServerTextBox;
 
-    public Text debugMsg;
-
     public void Update()
     {
         if(isStarting)
         {
             //GetServerName();
             Debug.Log("Is Starting");
-            debugMsg.text = "Is Starting";
             SetupSocket();
         }
 
@@ -62,13 +59,11 @@ public class Network_Controller : MonoBehaviour {
             if (socket.Connected)
             {
                 Debug.Log("Connected");
-                debugMsg.text = "Connected"; 
                 isStarting = false;
             }
             
         } catch(Exception e) {
             Debug.Log("Connection Failed");
-            debugMsg.text = "Connection Failed";
         }
     }
 
@@ -110,7 +105,6 @@ public class Network_Controller : MonoBehaviour {
     {
         GetUserName();
         Debug.Log("\'" + userName + "\'" + "has been sent to " + ADDR);
-        debugMsg.text = "\'" + userName + "\'" + "has been set to" + ADDR;
         userName += "\n";
         byte[] toSend = System.Text.Encoding.UTF8.GetBytes(userName);
         output.Write(userName);
@@ -125,7 +119,6 @@ public class Network_Controller : MonoBehaviour {
     {
         GetOpforName();
         Debug.Log("\'" + opforName + "\'" + "has been sent to " + ADDR);
-        debugMsg.text = "\'" + userName + "\'" + "has been set to" + ADDR;
         opforName += "\n";
         byte[] toSend = System.Text.Encoding.UTF8.GetBytes(opforName);
         output.Write(opforName);
@@ -165,7 +158,6 @@ public class Network_Controller : MonoBehaviour {
         if (!msgs.Equals(""))
         {
             Debug.Log(Time.time + " Got Message: " + msgs + " with length " + msgs.Length + " and index " );
-            debugMsg.text = Time.time + " Got Message: " + msgs + " with length " + msgs.Length + " and index ";
         }
     }
 
