@@ -19,14 +19,21 @@ public class Network_Controller : MonoBehaviour {
     private string opforName;
     private byte[] recvBuffer;
 
-    [SerializeField]
-    public GameObject UserTextBox;
+    private byte tag;
+    private short gamedata;
+    private int xPos;
+    private int yPos;
+    private int zPos;
+    private int xVel;
+    private int yVel;
+    private int zVel;
+    private const string GAMEOVER = "GAMEOVER";
 
-    [SerializeField]
-    public GameObject OpforTextBox;
+    [SerializeField] public GameObject UserTextBox;
+    [SerializeField] public GameObject OpforTextBox;
+    [SerializeField] public GameObject ServerTextBox;
 
-    [SerializeField]
-    public GameObject ServerTextBox;
+    
 
     public void Update()
     {
@@ -130,6 +137,7 @@ public class Network_Controller : MonoBehaviour {
     */
     public void sendMessage(string msg)
     {
+
         byte[] toSend = System.Text.Encoding.UTF8.GetBytes(msg);
         output.Write(msg);
         output.Flush();
@@ -161,7 +169,38 @@ public class Network_Controller : MonoBehaviour {
         }
     }
 
-    public void streamHandler()
+
+    /**
+    *Decodes data 
+    */
+    public void streamHandler(string msg)
+    {
+            byte[] data = System.Text.Encoding.Default.GetBytes(msg);
+
+            tag = data[0];
+            if(tag == 'G')
+            {
+                Debug.Log("GAMEOVER: Disconnecting " + userName);
+                socket.Close();
+                Debug.Log("Disconnected");
+            }
+
+            else if(tag == 'D')
+            {
+                gamedata = BitConverter.ToInt16(new byte[] { data[2], data[1] }, 0);
+                xPos = BitConverter.ToInt32(new byte[] { data[6], data[5], data[4], data[3] }, 0);
+                yPos = BitConverter.ToInt32(new byte[] { data[10], data[9], data[8], data[7] }, 0);
+                zPos = BitConverter.ToInt32(new byte[] { data[14], data[13], data[12], data[11] }, 0);
+                xVel = BitConverter.ToInt32(new byte[] { data[18], data[17], data[16], data[15] }, 0);
+                yVel = BitConverter.ToInt32(new byte[] { data[22], data[21], data[20], data[19] }, 0);
+                zVel = BitConverter.ToInt32(new byte[] { data[26], data[25], data[24], data[23] }, 0);
+
+                Debug.Log("Data Received: " + gamedata + " " + xPos + " " + yPos + " " + zPos + " " + xVel + " " + yVel + " " + zVel);
+            }   
+            
+    }
+
+    public void GameStateUpdate()
     {
 
     }
