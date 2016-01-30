@@ -17,10 +17,13 @@ public class Network_Controller : MonoBehaviour {
     NetworkStream netStream;
 
     [SerializeField]
-    public GameObject TestBox1;
+    public GameObject UserTextBox;
 
     [SerializeField]
-    public GameObject TestBox2;
+    public GameObject OpforTextBox;
+
+    [SerializeField]
+    public GameObject ServerTextBox;
 
 
     public void Update()
@@ -52,23 +55,29 @@ public class Network_Controller : MonoBehaviour {
         }
     }
 
+
+    /**
+    *Gets user name form text inputfield
+    */
     public void GetUserName()
     {
-        InputField input = TestBox1.GetComponent<InputField>();
+        InputField input = UserTextBox.GetComponent<InputField>();
         userName = input.text;
     }
 
+    /**
+    *
+    */
     public void GetOpforName()
     {
-        InputField input = TestBox2.GetComponent<InputField>();
+        InputField input = OpforTextBox.GetComponent<InputField>();
         opforName = input.text;
     }
 
-    void sendMessage(string msg)
+    public void GetServerName()
     {
-        byte[] toSend = System.Text.Encoding.UTF8.GetBytes(msg);
-        output.Write(msg);
-        output.Flush();
+        InputField input = ServerTextBox.GetComponent<InputField>();
+        ADDR = input.text;
     }
 
     public void sendUserName()
@@ -88,6 +97,13 @@ public class Network_Controller : MonoBehaviour {
         opforName += "\n";
         byte[] toSend = System.Text.Encoding.UTF8.GetBytes(opforName);
         output.Write(opforName);
+        output.Flush();
+    }
+
+    void sendMessage(string msg)
+    {
+        byte[] toSend = System.Text.Encoding.UTF8.GetBytes(msg);
+        output.Write(msg);
         output.Flush();
     }
 
