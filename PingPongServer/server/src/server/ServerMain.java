@@ -9,6 +9,7 @@ public class ServerMain
 	final int maxConnections = 100; // no-one wants to play this game
 	
 	private ClientConnection[] connections;
+	int numConnections;
 	
 	public static void main(String[] args)
 	{
@@ -17,6 +18,10 @@ public class ServerMain
 	
 	public ServerMain()
 	{
+		int i = 0;
+		numConnections = 0;
+		connections = new ClientConnection[maxConnections];
+		
 		// create server socket
 		try 
 		{
@@ -34,7 +39,7 @@ public class ServerMain
 			try
 			{
 				Socket sock = server.accept();
-				addConnection(new ClientConnection(sock));
+				addConnection(new ClientConnection(i++, sock, this));
 			}
 			catch (Exception e)
 			{
@@ -42,38 +47,44 @@ public class ServerMain
 			}
 		}
 		
+		//server.close();
 	}
 	
 	synchronized void addConnection(ClientConnection connection)
 	{
-		int index = connections.length;
+		int index = numConnections;
 		if (index >= maxConnections) return;
 		
 		connections[index] = connection;
+		numConnections++;
 	}
 	
 	synchronized void removeConnection(ClientConnection connection)
 	{
-		for (int i = 0; i < connections.length; i++)
+		for (int i = 0; i < numConnections; i++)
 		{
 			if (connection == connections[i])
 			{
-				for (int j = i; j < connections.length - 1; j++)
+				for (int j = i; j < numConnections - 1; j++)
 				{
 					connections[j] = connections[j+1];
 				}
-				connections[connections.length - 1] = null;
+				connections[numConnections - 1] = null;
+				numConnections--;
 			}
 		}
 	}
 	
 	synchronized ClientConnection getConnection(String name)
 	{
-		for (int i = 0; i < connections.length; i++)
+		for (int i = 0; i < numConnections; i++)
 		{
-			if (connections[i].getName().equals(name))
+			if (connections[i].getName() != null)
 			{
-				return connections[i];
+				if (connections[i].getName().equals(name))
+				{
+					return connections[i];
+				}
 			}
 		}
 		return null;
