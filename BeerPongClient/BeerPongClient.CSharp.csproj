@@ -62,10 +62,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="BeerPongClient.CSharp.Plugins.csproj">
+      <Project>{21224EB4-1649-3DF7-7B01-DADB5D8243D2}</Project>
+      <Name>BeerPongClient.CSharp.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Scripts\BallBehavior.cs" />
     <Compile Include="Assets\Scripts\CupBehavior.cs" />
     <Compile Include="Assets\Scripts\Network_Controller.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\Enums.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\HIDapi.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\Internal\ReadOnlyArray.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\Internal\RegisterReadData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\Wiimote.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\AccelData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\ButtonData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\ClassicControllerData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\IRData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\MotionPlusData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\NunchuckData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\StatusData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\WiiUProData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\WiimoteData.cs" />
+    <Compile Include="Assets\Wiimote\Scripts\WiimoteManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
