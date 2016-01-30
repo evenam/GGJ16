@@ -109,7 +109,7 @@ public class Network_Controller : MonoBehaviour {
     public void sendUserName()
     {
         GetUserName();
-        Debug.Log("\'" + userName + "\'" + "has been set to" + ADDR);
+        Debug.Log("\'" + userName + "\'" + "has been sent to " + ADDR);
         debugMsg.text = "\'" + userName + "\'" + "has been set to" + ADDR;
         userName += "\n";
         byte[] toSend = System.Text.Encoding.UTF8.GetBytes(userName);
@@ -124,7 +124,7 @@ public class Network_Controller : MonoBehaviour {
     public void sendOpforName()
     {
         GetOpforName();
-        Debug.Log("\'" + opforName + "\'" + "has been set to" + ADDR);
+        Debug.Log("\'" + opforName + "\'" + "has been sent to " + ADDR);
         debugMsg.text = "\'" + userName + "\'" + "has been set to" + ADDR;
         opforName += "\n";
         byte[] toSend = System.Text.Encoding.UTF8.GetBytes(opforName);
