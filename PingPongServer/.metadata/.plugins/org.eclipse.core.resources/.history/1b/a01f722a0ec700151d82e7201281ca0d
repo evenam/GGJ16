@@ -1,0 +1,49 @@
+package server;
+
+import java.net.*;
+
+public class ServerMain 
+{
+	ServerSocket server;
+	final int port = 8904;
+	final int maxConnections = 100; // no-one wants to play this game
+	
+	private ClientConnection[] connections;
+	
+	public static void main(String[] args)
+	{
+		new ServerMain();
+	}
+	
+	public ServerMain()
+	{
+		// create server socket
+		try 
+		{
+			server = new ServerSocket(port);
+			System.out.println("Listening on port " + port);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		// continuously accept connections
+		
+	}
+	
+	synchronized void addConnection()
+	{
+		
+	}
+	
+	synchronized void removeConnection(String name)
+	{
+		
+	}
+	
+	synchronized ClientConnection getConnection(String name)
+	{
+		
+	}
+}
