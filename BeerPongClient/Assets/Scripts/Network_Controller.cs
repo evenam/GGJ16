@@ -57,7 +57,7 @@ public class Network_Controller : MonoBehaviour {
 
 
     /**
-    *Gets user name form text inputfield
+    *Gets user name fromm text inputfield
     */
     public void GetUserName()
     {
@@ -66,7 +66,7 @@ public class Network_Controller : MonoBehaviour {
     }
 
     /**
-    *
+    *Gets opfor name from text inputfield
     */
     public void GetOpforName()
     {
