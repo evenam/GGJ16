@@ -6,10 +6,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{FB6E9F05-4AAB-4391-1F00-DA79A48C9730}</ProjectGuid>
+    <ProjectGuid>{C86F321F-AACD-9C3F-E003-6F660F761AC0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>Assets</BaseDirectory>
@@ -45,25 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BallBehavior.cs" />
-     <Compile Include="Assets\Scripts\CupBehavior.cs" />
-     <Compile Include="Assets\Scripts\Network_Controller.cs" />
-     <Compile Include="Assets\Scripts\PlayerController.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\Enums.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\HIDapi.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\Internal\ReadOnlyArray.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\Internal\RegisterReadData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\Wiimote.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\AccelData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\ButtonData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\ClassicControllerData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\IRData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\MotionPlusData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\NunchuckData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\StatusData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\WiiUProData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteData\WiimoteData.cs" />
-     <Compile Include="Assets\Wiimote\Scripts\WiimoteManager.cs" />
+     <Compile Include="Assets\Plugins\Pixelplacement\iTween\iTween.cs" />
      <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
@@ -71,10 +53,6 @@
  <Reference Include="UnityEngine.Networking">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{C86F321F-AACD-9C3F-E003-6F660F761AC0}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -53,6 +53,7 @@ public class BallBehavior : MonoBehaviour
 		}
         else if (other.name == "Table")
         {
+            Debug.Log("bounce");
 			bounced = true;
 		}
         else if (other.name.Contains("TriCup"))
@@ -93,7 +94,6 @@ public class BallBehavior : MonoBehaviour
 
     void DisablePlay()
     {
-        Debug.Log("disabling");
         myPlayer.DisablePlay();
         EndTurn();
     }
