@@ -6,7 +6,7 @@ public class BallBehavior : MonoBehaviour
 	private int points;
 	private bool bounced;
 
-	public  GameObject playerObj;
+	private Camera playerObj;
 	private PlayerController myPlayer;
 
 	// Use this for initialization
@@ -15,7 +15,8 @@ public class BallBehavior : MonoBehaviour
 		points = 0;
 		bounced = false;
 
-        myPlayer = playerObj.GetComponent<PlayerController>();
+        playerObj = Camera.main;
+        myPlayer  = playerObj.GetComponent<PlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -24,10 +25,8 @@ public class BallBehavior : MonoBehaviour
 		/*
 		 * When player runs out of time.
 		 */
-        Debug.Log(myPlayer.IsEnabled());
-		if (!myPlayer.IsEnabled())
+        if (!myPlayer.IsEnabled())
         {
-            Debug.Log("disabled");
 			points = 0;
 			EndTurn();
 		}
@@ -43,7 +42,6 @@ public class BallBehavior : MonoBehaviour
 	 */
 	void OnTriggerEnter(Collider other)
 	{
-            Debug.Log("collide");
 		if (other.name.Contains("Cup"))
         {
 			if (bounced)
@@ -88,7 +86,6 @@ public class BallBehavior : MonoBehaviour
 	 */
 	void EndTurn()
 	{
-        Debug.Log("end");
 		myPlayer.ReceivePoints(points);
 		Destroy(gameObject);
 	}

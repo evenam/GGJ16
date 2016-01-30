@@ -15,14 +15,13 @@ public class PlayerController : MonoBehaviour
 		playEnabled = true;
 		myPoints = 0;
 
-        UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
+        //UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
         EnablePlay();
 	}
 	
 	// Update is called once per frame
 	void Update()
 	{
-        Debug.Log(playEnabled);
 		if (Time.time - timeStart > 30f && playEnabled)
         {
 			TimeUp();
@@ -76,7 +75,6 @@ public class PlayerController : MonoBehaviour
 
 	void TimeUp()
 	{
-        Debug.Log("time up");
 		DisablePlay();
 	}
 }
