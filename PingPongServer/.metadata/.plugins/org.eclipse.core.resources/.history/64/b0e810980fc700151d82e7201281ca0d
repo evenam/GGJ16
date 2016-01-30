@@ -1,0 +1,69 @@
+package server;
+
+import java.net.*;
+import java.io.*;
+
+public class ClientConnection implements Runnable 
+{
+	private Socket socket;
+	private String name;
+	private boolean running;
+	Stage stage; 
+	
+	private enum Stage
+	{ 
+		GETTING_USERNAME, 
+		GETTING_OPPONENTNAME, 
+		WAITING_CLIENT, 
+		WAITING_OPPONENT 
+	}
+	
+	public ClientConnection(Socket sock)
+	{
+		socket = sock;
+		
+		Thread t = new Thread(this);
+		t.start();
+	}
+	
+	
+	public void run() 
+	{
+	}
+	
+	public void clean()
+	{
+		
+	}
+	
+	// grunt workers
+	private void attemptGetUsername()
+	{
+		
+	}
+	
+	private void attemptGetOpponentname()
+	{
+		
+	}
+	
+	private void attemptClientWait()
+	{
+		
+	}
+	
+	synchronized void opponentResponse(String resp)
+	{
+		
+	}
+	
+	synchronized public String getName()
+	{
+		return name;
+	}
+	
+	synchronized public void setName(String newName)
+	{
+		name = newName;
+	}
+}
