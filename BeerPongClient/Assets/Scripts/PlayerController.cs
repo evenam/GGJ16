@@ -3,23 +3,34 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-	private bool playEnabled;
+	private bool  playEnabled;
 	private float timeStart;
-	private int myPoints;
+	private int   myPoints;
+
+    public GameObject pingPong;
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
-		playEnabled = false;
+		playEnabled = true;
 		myPoints = 0;
+
+        UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
+        EnablePlay();
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void Update()
 	{
-		if (Time.time - timeStart > 30) {
-			TimeUp ();
+        Debug.Log(playEnabled);
+		if (Time.time - timeStart > 30f && playEnabled)
+        {
+			TimeUp();
 		}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(pingPong, new Vector3(transform.position.x - 3, transform.position.y, transform.position.z), Quaternion.identity);
+        }
 	}
 
 	/*
@@ -43,7 +54,7 @@ public class PlayerController : MonoBehaviour
 	public void EnablePlay()
 	{
 		playEnabled = true;
-		StartTimer ();
+		StartTimer();
 	}
 
 	public void DisablePlay()
@@ -65,6 +76,7 @@ public class PlayerController : MonoBehaviour
 
 	void TimeUp()
 	{
-		DisablePlay ();
+        Debug.Log("time up");
+		DisablePlay();
 	}
 }

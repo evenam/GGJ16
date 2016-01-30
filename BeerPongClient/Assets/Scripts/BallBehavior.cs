@@ -6,40 +6,30 @@ public class BallBehavior : MonoBehaviour
 	private int points;
 	private bool bounced;
 
-	public GameObject[] players;
+	public  GameObject playerObj;
 	private PlayerController myPlayer;
-	private PlayerController theirPlayer;
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
 		points = 0;
 		bounced = false;
 
-		/*
-		 * Find active player.
-		 */
-		if (players [0].GetComponent<PlayerController> ().IsEnabled ())
-		{
-			myPlayer = players [0].GetComponent<PlayerController> ();
-			theirPlayer = players [1].GetComponent<PlayerController> ();
-		}
-		else
-		{
-			myPlayer = players [1].GetComponent<PlayerController> ();
-			theirPlayer = players[0].GetComponent<PlayerController> ();
-		}
+        myPlayer = playerObj.GetComponent<PlayerController>();
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void Update()
 	{
 		/*
 		 * When player runs out of time.
 		 */
-		if (!myPlayer.IsEnabled ()) {
+        Debug.Log(myPlayer.IsEnabled());
+		if (!myPlayer.IsEnabled())
+        {
+            Debug.Log("disabled");
 			points = 0;
-			EndTurn ();
+			EndTurn();
 		}
 	}
 
@@ -53,26 +43,32 @@ public class BallBehavior : MonoBehaviour
 	 */
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.name.Contains ("Cup")) {
+            Debug.Log("collide");
+		if (other.name.Contains("Cup"))
+        {
 			if (bounced)
 				points = 2;
 			else
 				points = 1;
-			EndTurn ();
-		} else if (other.name == "Table") {
+			DisablePlay();
+		}
+        else if (other.name == "Table")
+        {
 			bounced = true;
-		} else if (other.name.Contains ("TriCup")) {
+		}
+        else if (other.name.Contains("TriCup"))
+        {
 			points = 5;
-			EndTurn ();
+            DisablePlay();
 		} 
 		else if (other.name.Contains("Island"))
 		{
 			points = 3;
-			EndTurn ();
+            DisablePlay();
 		}
-		else if (other.name.Contains ("ReturnTrigger"))
+		else if (other.name.Contains("ReturnTrigger"))
 		{
-			ResetTurn ();
+			ResetTurn();
 		}
 	}
 
@@ -81,8 +77,8 @@ public class BallBehavior : MonoBehaviour
 	 */
 	void ResetTurn()
 	{
-		myPlayer.StartTimer ();
-		Destroy (gameObject);
+		myPlayer.StartTimer();
+		Destroy(gameObject);
 	}
 
 	/*
@@ -92,9 +88,14 @@ public class BallBehavior : MonoBehaviour
 	 */
 	void EndTurn()
 	{
-		myPlayer.ReceivePoints (points);
-		myPlayer.DisablePlay ();
-		theirPlayer.EnablePlay ();
-		Destroy (gameObject);
+        Debug.Log("end");
+		myPlayer.ReceivePoints(points);
+		Destroy(gameObject);
 	}
+
+    void DisablePlay()
+    {
+        myPlayer.DisablePlay();
+        EndTurn();
+    }
 }
