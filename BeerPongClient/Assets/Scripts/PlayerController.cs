@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
 	private Vector3 rotOffset = Vector3.zero;
     public GameObject flipper;
     public Text scoreBoard;
+    private int curCups;
 
 	// Use this for initialization
 	void Start()
@@ -67,7 +68,7 @@ public class PlayerController : MonoBehaviour
         velocity = 0;
         finalVel = 0;
         fVelTime = 0;
-        
+        curCups = 0;
 
         //UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
         EnablePlay();
@@ -345,20 +346,34 @@ public class PlayerController : MonoBehaviour
 
     public void IncreaseDrunk()
     {
-        Camera.main.GetComponent<Draaank>().AddDrunk();
-        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount += 10;
+        Camera.main.GetComponent<Draaank>().Drunk += 10;
+        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount += .01f;
+    }
+
+    public void resetDrunk(int reset)
+    {
+        int resetD = 10 * reset;
+        float resetM = .01f * reset;
+
+        Camera.main.GetComponent<Draaank>().Drunk -= resetD;
+        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount += resetM;
     }
 
     public void UpdateScore()
     {
         int op = 0;
         int user = 0;
-        for(int i = 0; i<6; i++)
+        for (int i = 0; i < 6; i++)
             if (cups[i] == 'D')
+            {
                 op++;
+                IncreaseDrunk();
+                resetDrunk(curCups);
+            }
         for (int i = 6; i < 12; i++)
             if (cups[i] == 'D')
                 user++;
+        curCups = op;
         scoreBoard.text = user +" : " + op;
     }
 }
