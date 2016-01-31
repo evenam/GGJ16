@@ -28,6 +28,7 @@ public class ClientConnection implements Runnable
 		threadNumber = num;
 		socket = sock;
 		app = application;
+		System.out.println("Accepted user on thread " + num);
 		
 		try
 		{
@@ -50,16 +51,73 @@ public class ClientConnection implements Runnable
 		stage = Stage.GETTING_USERNAME;
 		while (running)
 		{
-			if (stage == Stage.GETTING_USERNAME) attemptGetUsername();
-			if (stage == Stage.GETTING_OPPONENTNAME) attemptGetOpponentname();
-			if (stage == Stage.WAITING_CLIENT) attemptClientWait();
-			if (!socket.isConnected()) running = false;
+			if (socket.isConnected())
+			{
+				String input = "";
+				try 
+				{
+					input = in.readLine();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					running = false;
+				}
+				
+				if (!input.equals("DISCONNECT"))
+				{
+					if (input.equals("GAMEOVER"))
+					{
+						stage = Stage.GETTING_USERNAME;
+						try
+						{
+							out.println("GAMEOVER");
+							stage = Stage.GETTING_USERNAME;
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+					if (stage == Stage.GETTING_USERNAME) 
+					{
+						attemptGetUsername(input);
+						continue;
+					}
+					if (stage == Stage.GETTING_OPPONENTNAME) 
+					{
+						attemptGetOpponentname(input);
+						continue;
+					}
+					if (stage == Stage.WAITING_CLIENT) 
+					{
+						attemptClientWait(input);
+						continue;
+					}
+				}
+				else
+				{
+					try
+					{
+						out.println("XDISCONNECT");
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+					running = false;
+				}
+			}
+			if (!socket.isConnected()) 
+				running = false;
 		}
 		clean();
 	}
 	
 	public void clean()
 	{
+		System.out.println("Removing user " + getName() + " on thread " + threadNumber);
+		app.removeConnection(this);
 		try
 		{
 			in.close();
@@ -73,79 +131,59 @@ public class ClientConnection implements Runnable
 	}
 	
 	// grunt workers
-	private void attemptGetUsername()
+	private void attemptGetUsername(String input)
 	{
-		String username;
-		try
+		String username = input;
+		ClientConnection test = app.getConnection(username);
+		if (test != null)
 		{
-			username = in.readLine();
-			ClientConnection test = app.getConnection(username);
-			if (test != null)
-			{
-				out.println("USERNAME_REJECTED");
-				System.out.println("Username of thread " + threadNumber + " (" + username + ") rejected. ");
-			}
-			else
-			{
-				System.out.println("Username of thread " + threadNumber + " (" + username + ") accepted. ");
-				out.println("USERNAME_ACCPETED");
-				setName(username);
-				stage = Stage.GETTING_OPPONENTNAME;
-			}
+			out.println("USERNAME_REJECTED");
+			out.flush();
+			System.out.println("Username of thread " + threadNumber + " (" + username + ") rejected. ");
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			System.out.println("Username of thread " + threadNumber + " (" + username + ") accepted. ");
+			out.println("USERNAME_ACCPETED");
+			out.flush();
+			setName(username);
+			stage = Stage.GETTING_OPPONENTNAME;
 		}
 	}
 	
-	private void attemptGetOpponentname()
+	private void attemptGetOpponentname(String input)
 	{
-		String opponentName;
-		try
+		String opponentName = input;
+		opponent = app.getConnection(opponentName);
+		if (opponent == null)
 		{
-			opponentName = in.readLine();
-			opponent = app.getConnection(opponentName);
-			if (opponent == null)
-			{
-				out.println("OPPONENT_REJECTED");
-				System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") rejected. ");
-			}
-			else
-			{
-				System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") accepted. ");
-				out.println("OPPONENT_ACCPETED");
-				stage = Stage.WAITING_CLIENT;
-			}
+			out.println("OPPONENT_REJECTED");
+			out.flush();
+			System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") rejected. ");
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") accepted. ");
+			out.println("OPPONENT_ACCPETED");
+			out.flush();
+			stage = Stage.WAITING_CLIENT;
 		}
 	}
 	
-	private void attemptClientWait()
+	synchronized private void attemptClientWait(String input)
 	{
-		String input;
-		try
-		{
-			input = in.readLine();
-			opponent.opponentResponse(input);
-			System.out.println("Sending opponent a game move: " + input);
-			stage = Stage.WAITING_OPPONENT;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		System.out.println("Sending opponent a game move: " + input);
+		stage = Stage.WAITING_OPPONENT;
+		opponent.opponentResponse(input);
 	}
 	
 	synchronized void opponentResponse(String resp)
 	{
 		try
 		{
-			out.println(resp);
 			System.out.println("Received a game move: " + resp);
+			out.println(resp);
+			out.flush();
 			stage = Stage.WAITING_CLIENT;
 		}
 		catch (Exception e)

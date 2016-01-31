@@ -14,7 +14,17 @@ public class Network_Controller : MonoBehaviour {
     private string ADDR = "130.39.94.243";
     private int PORT = 8904;
     private TcpClient socket;
-    private bool isStarting = true;
+
+    private enum Stage
+    {
+        GETTING_USERNAME,
+        GETTING_OPPONENTNAME,
+        WAITING_CLIENT,
+        WAITING_OPPONENT
+    }
+
+    Stage stage;
+
     private string userName;
     private string opforName;
     private byte[] recvBuffer;
@@ -32,13 +42,24 @@ public class Network_Controller : MonoBehaviour {
     [SerializeField] public GameObject UserTextBox;
     [SerializeField] public GameObject OpforTextBox;
     [SerializeField] public GameObject ServerTextBox;
+    [SerializeField] public GameObject UIButton;
 
-    
+    public void Start()
+    {
+        InputField i = ServerTextBox.GetComponent<InputField>();
+        i.text = ADDR;
+        SetupSocket();
+        stage = Stage.GETTING_USERNAME;
+        socket.NoDelay = true;
+    }
 
     public void Update()
     {
-        if(isStarting)
+        if (stage == Stage.GETTING_OPPONENTNAME || stage == Stage.GETTING_USERNAME)
+            EnableGUI();
+        else
         {
+<<<<<<< Updated upstream
             //GetServerName();
 <<<<<<< Updated upstream
             Debug.Log("Is Starting");
@@ -47,13 +68,47 @@ public class Network_Controller : MonoBehaviour {
             debugMsg.text = "Is Starting";
 >>>>>>> Stashed changes
             SetupSocket();
+=======
+            DisableGUI();
+            sendMessage("YOLO\n");
+            recvMessage();
+>>>>>>> Stashed changes
+        }
+    }
+
+    public void InitializeConnection()
+    {
+        // handshake
+        string response = "USERNAME_REJECTED";
+
+        if (stage == Stage.GETTING_USERNAME)
+        {
+            sendUserName();
+            response = input.ReadLine().Trim();
+            if (response.Equals("USERNAME_REJECTED"))
+            {
+                return;
+            }
+            stage = Stage.GETTING_OPPONENTNAME;
         }
 
-        if(socket.Available > 0)
+        Debug.Log("Sent in username");
+
+
+        if (stage == Stage.GETTING_OPPONENTNAME)
         {
-            readMessage();
+            sendOpforName();
+            response = input.ReadLine().Trim();
+            if (response.Equals("OPPONENT_REJECTED"))
+            {
+                return;
+            }
+            stage = Stage.WAITING_CLIENT;
         }
-        
+
+        Debug.Log("Sent in opponent name");
+
+        // complete
     }
 
     /**
@@ -72,11 +127,14 @@ public class Network_Controller : MonoBehaviour {
             {
 <<<<<<< Updated upstream
                 Debug.Log("Connected");
+<<<<<<< Updated upstream
 =======
                 //Debug.Log("Connected");
                 debugMsg.text = "Connected"; 
 >>>>>>> Stashed changes
                 isStarting = false;
+=======
+>>>>>>> Stashed changes
             }
             
         } catch(Exception e) {
@@ -159,10 +217,11 @@ public class Network_Controller : MonoBehaviour {
     public string recvMessage()
     {
         int bytesToRead = socket.Available;
+        if (bytesToRead <= 0) return "";
         recvBuffer = new byte[bytesToRead];
         netStream.Read(recvBuffer, 0, bytesToRead);
         string msg = System.Text.Encoding.Default.GetString(recvBuffer);
-        Debug.Log(msg);
+        Debug.Log("Received: " + msg);
         return msg;
     }
 
@@ -185,29 +244,40 @@ public class Network_Controller : MonoBehaviour {
     */
     public void streamHandler(string msg)
     {
-            byte[] data = System.Text.Encoding.Default.GetBytes(msg);
+        byte[] data = System.Text.Encoding.Default.GetBytes(msg);
 
-            tag = data[0];
-            if(tag == 'G')
-            {
-                Debug.Log("GAMEOVER: Disconnecting " + userName);
-                socket.Close();
-                Debug.Log("Disconnected");
-            }
+        tag = data[0];
+        if(tag == 'G')
+        {
+            Debug.Log("GAMEOVER: Disconnecting " + userName);
+            socket.Close();
+            Debug.Log("Disconnected");
+        }
 
-            else if(tag == 'D')
-            {
-                gamedata = BitConverter.ToInt16(new byte[] { data[2], data[1] }, 0);
-                xPos = BitConverter.ToInt32(new byte[] { data[6], data[5], data[4], data[3] }, 0);
-                yPos = BitConverter.ToInt32(new byte[] { data[10], data[9], data[8], data[7] }, 0);
-                zPos = BitConverter.ToInt32(new byte[] { data[14], data[13], data[12], data[11] }, 0);
-                xVel = BitConverter.ToInt32(new byte[] { data[18], data[17], data[16], data[15] }, 0);
-                yVel = BitConverter.ToInt32(new byte[] { data[22], data[21], data[20], data[19] }, 0);
-                zVel = BitConverter.ToInt32(new byte[] { data[26], data[25], data[24], data[23] }, 0);
+        else if(tag == 'D')
+        {
+            gamedata = BitConverter.ToInt16(new byte[] { data[2], data[1] }, 0);
+            xPos = BitConverter.ToInt32(new byte[] { data[6], data[5], data[4], data[3] }, 0);
+            yPos = BitConverter.ToInt32(new byte[] { data[10], data[9], data[8], data[7] }, 0);
+            zPos = BitConverter.ToInt32(new byte[] { data[14], data[13], data[12], data[11] }, 0);
+            xVel = BitConverter.ToInt32(new byte[] { data[18], data[17], data[16], data[15] }, 0);
+            yVel = BitConverter.ToInt32(new byte[] { data[22], data[21], data[20], data[19] }, 0);
+            zVel = BitConverter.ToInt32(new byte[] { data[26], data[25], data[24], data[23] }, 0);
 
-                Debug.Log("Data Received: " + gamedata + " " + xPos + " " + yPos + " " + zPos + " " + xVel + " " + yVel + " " + zVel);
-            }   
+            Debug.Log("Data Received: " + gamedata + " " + xPos + " " + yPos + " " + zPos + " " + xVel + " " + yVel + " " + zVel);
+        }   
+        else if (tag == 'X')
+        {
+            stage = Stage.GETTING_USERNAME;
+        }
             
+    }
+
+    public void OnApplicationQuit()
+    {
+        Debug.Log("Bye");
+        sendMessage("DISCONNECT");
+        socket.Close();
     }
 
     public void GameStateUpdate()
@@ -215,6 +285,21 @@ public class Network_Controller : MonoBehaviour {
 
     }
 
+    public void EnableGUI()
+    {
+        UserTextBox.SetActive(true);
+        OpforTextBox.SetActive(true);
+        ServerTextBox.SetActive(true);
+        UIButton.SetActive(true);
+    }
+
+    public void DisableGUI()
+    {
+       UserTextBox.SetActive(false);
+       OpforTextBox.SetActive(false);
+       ServerTextBox.SetActive(false);
+       UIButton.SetActive(false);
+    }
 }
 
 
