@@ -158,6 +158,8 @@ public class ClientConnection implements Runnable
 		if (opponentName.equals(""))
 		{
 			opponentName = input;
+			out.println("OPPONENT_ACCEPTED");
+			out.flush();
 			opponent = app.getConnection(opponentName);
 			if (opponent != null)
 			{
