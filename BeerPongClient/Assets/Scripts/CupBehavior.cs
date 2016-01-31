@@ -4,6 +4,7 @@ using System.Collections;
 public class CupBehavior : MonoBehaviour {
 
     public int cupNumber;
+    public PlayerController PC;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +27,6 @@ public class CupBehavior : MonoBehaviour {
 
     void KillMe()
     {
-        Destroy(gameObject);
+        PC.KillCup(cupNumber);
     }
 }

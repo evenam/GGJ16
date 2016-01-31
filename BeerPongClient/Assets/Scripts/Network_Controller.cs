@@ -72,10 +72,10 @@ public class Network_Controller : MonoBehaviour {
 			
             if (stage == Stage.WAITING_OPPONENT)
             {
-                string s = recvMessage();
+                string s = recvMessage().Trim();
                 if (s.Length > 0)
                 {
-                    if (s == "GAMEOVER" || s == "XDISCONNECT")
+                    if (s.Equals("GAMEOVER") || s.Equals("XDISCONNECT"))
                         Application.Quit();
                     Debug.Log("STATE: " + s);
                     PC.setState(s);
@@ -338,7 +338,6 @@ public class Network_Controller : MonoBehaviour {
     public void NotifyWithTimer(string notification, int time)
     {
         ClearNotification();
-        Debug.Log(NotificationTextbox);
         NotificationTextbox.SetActive(true);
         Text input = NotificationTextbox.GetComponent<Text>();
         input.text = notification;

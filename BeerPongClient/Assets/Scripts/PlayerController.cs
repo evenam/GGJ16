@@ -71,17 +71,17 @@ public class PlayerController : MonoBehaviour
     {
         cups = st;
         if (cups[0] == 'D') cup1.SetActive(false); else cup1.SetActive(true);
-        if (cups[1] == 'D') cup1.SetActive(false); else cup2.SetActive(true);
-        if (cups[2] == 'D') cup1.SetActive(false); else cup3.SetActive(true);
-        if (cups[3] == 'D') cup1.SetActive(false); else cup4.SetActive(true);
-        if (cups[4] == 'D') cup1.SetActive(false); else cup5.SetActive(true);
-        if (cups[5] == 'D') cup1.SetActive(false); else cup6.SetActive(true);
-        if (cups[6] == 'D') cup1.SetActive(false); else cup7.SetActive(true);
-        if (cups[7] == 'D') cup1.SetActive(false); else cup8.SetActive(true);
-        if (cups[8] == 'D') cup1.SetActive(false); else cup9.SetActive(true);
-        if (cups[9] == 'D') cup1.SetActive(false); else cup10.SetActive(true);
-        if (cups[10] == 'D') cup1.SetActive(false); else cup11.SetActive(true);
-        if (cups[11] == 'D') cup1.SetActive(false); else cup12.SetActive(true);
+        if (cups[1] == 'D') cup2.SetActive(false); else cup2.SetActive(true);
+        if (cups[2] == 'D') cup3.SetActive(false); else cup3.SetActive(true);
+        if (cups[3] == 'D') cup4.SetActive(false); else cup4.SetActive(true);
+        if (cups[4] == 'D') cup5.SetActive(false); else cup5.SetActive(true);
+        if (cups[5] == 'D') cup6.SetActive(false); else cup6.SetActive(true);
+        if (cups[6] == 'D') cup7.SetActive(false); else cup7.SetActive(true);
+        if (cups[7] == 'D') cup8.SetActive(false); else cup8.SetActive(true);
+        if (cups[8] == 'D') cup9.SetActive(false); else cup9.SetActive(true);
+        if (cups[9] == 'D') cup10.SetActive(false); else cup10.SetActive(true);
+        if (cups[10] == 'D') cup11.SetActive(false); else cup11.SetActive(true);
+        if (cups[11] == 'D') cup12.SetActive(false); else cup12.SetActive(true);
     }
 
     int calculateScore1(string theCups)
@@ -246,8 +246,18 @@ public class PlayerController : MonoBehaviour
         isFirst = b;
         if (b)
         {
-            Debug.Log("Flipped to keep the cups correct");
-            flipper.transform.Rotate(0.0f, 180.0f, 0.0f);
+            cup1.GetComponent<CupBehavior>().cupNumber = 6;
+            cup2.GetComponent<CupBehavior>().cupNumber = 7;
+            cup3.GetComponent<CupBehavior>().cupNumber = 8;
+            cup4.GetComponent<CupBehavior>().cupNumber = 9;
+            cup5.GetComponent<CupBehavior>().cupNumber = 10;
+            cup6.GetComponent<CupBehavior>().cupNumber = 11;
+            cup7.GetComponent<CupBehavior>().cupNumber = 0;
+            cup8.GetComponent<CupBehavior>().cupNumber = 1;
+            cup9.GetComponent<CupBehavior>().cupNumber = 2;
+            cup10.GetComponent<CupBehavior>().cupNumber = 3;
+            cup11.GetComponent<CupBehavior>().cupNumber = 4;
+            cup12.GetComponent<CupBehavior>().cupNumber = 5;
         }
     }
 
@@ -293,5 +303,17 @@ public class PlayerController : MonoBehaviour
     public void passTurn(string shotType)
     {
         app.sendClientGameState(cups);
+    }
+
+    public void KillCup(int number)
+    {
+        string newState = "";
+        for (int i = 0; i < 12; i++)
+        {
+            if (number == i)
+                newState += 'D';
+            else
+                newState += cups[i];
+        }
     }
 }
