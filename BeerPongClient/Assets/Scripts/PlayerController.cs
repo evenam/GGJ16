@@ -115,10 +115,10 @@ public class PlayerController : MonoBehaviour
         {
             RaycastHit hit;
             Physics.Raycast(transform.position, transform.forward, out hit);
-            Vector3 cursorPosition = new Vector3(cursor.transform.position.x, hit.transform.position.y, hit.transform.position.z);
+            //Vector3 cursorPosition = new Vector3(cursor.transform.position.x, hit.transform.position.y, hit.transform.position.z);
             if (Input.GetKeyDown(KeyCode.Tab))
                 Debug.Log("hi");
-            cursor.transform.position = cursorPosition;
+            //cursor.transform.position = cursorPosition;
 
         }
 
@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
                         finalVel = velocity;
                         fVelTime = Time.time;
                     }
-                    iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime / 4.0f, "onupdate", "ShowGhost"));
+                    iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime * 4.0f, "onupdate", "ShowGhost"));
 
                     Debug.Log(finalVel);
 
