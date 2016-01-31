@@ -54,6 +54,7 @@ public class BallBehavior : MonoBehaviour
 	{
 		if (other.name.Contains("Cup"))
         {
+            app.KillCup(other.GetComponent<CupBehavior>().cupNumber);
 			if (bounced)
 				points = 2;
 			else

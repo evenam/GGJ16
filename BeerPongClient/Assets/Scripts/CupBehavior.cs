@@ -20,7 +20,6 @@ public class CupBehavior : MonoBehaviour {
     {
         if (other.name.Contains("Ball"))
         {
-            PC.KillCup(cupNumber);
             iTween.ShakeScale(gameObject, iTween.Hash("amount", new Vector3(0.5f, 0.5f, 0.5f), "time", 0.5f));
             iTween.ScaleTo(gameObject, iTween.Hash("scale", new Vector3(0f, 0f, 0f), "time", 0.5f, "delay", 0.3f, "easeType", "easeInQuart", "oncomplete", "KillMe", "oncompletetarget", gameObject));
         }

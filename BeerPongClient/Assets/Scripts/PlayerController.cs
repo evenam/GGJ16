@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject pingPong;
     public GameObject ghostBall;
     public Network_Controller app;
+    public GameObject cursor;
 
     public GameObject cup1, cup2, cup3, cup4,
                        cup5, cup6, cup7, cup8,
@@ -114,13 +115,18 @@ public class PlayerController : MonoBehaviour
         {
             RaycastHit hit;
             Physics.Raycast(transform.position, transform.forward, out hit);
+            Vector3 cursorPosition = new Vector3(cursor.transform.position.x, hit.transform.position.y, hit.transform.position.z);
             if (Input.GetKeyDown(KeyCode.Tab))
                 Debug.Log("hi");
+            cursor.transform.position = cursorPosition;
 
         }
 
+        // void establish from state()
+
         if (app.RespectMyAutoritah() && !myBall)
         {
+            ghostBall.SetActive(true);
             if (usingWiimote)
             {
                 int ret;
@@ -188,6 +194,10 @@ public class PlayerController : MonoBehaviour
             {
                 TimeUp();
             }
+        }
+        else
+        {
+            ghostBall.SetActive(false);
         }
 	}
 
@@ -315,5 +325,6 @@ public class PlayerController : MonoBehaviour
             else
                 newState += cups[i];
         }
+        cups = newState;
     }
 }
