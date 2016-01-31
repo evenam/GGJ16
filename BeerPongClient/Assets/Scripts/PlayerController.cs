@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 	private float timeStart;
 	
 	private int   myPoints;
+    private float oldVecz;
+    private float newVecz;
     private float leftRightMotion;
     private float velocity;
     private float finalVel;
@@ -39,6 +41,8 @@ public class PlayerController : MonoBehaviour
         rayOn = true;
 		playEnabled = true;
         throwSet = false;
+        oldVecz = 0;
+        newVecz = 0;
         leftRightMotion = 0;
 		myPoints = 0;
         velocity = 0;
@@ -60,6 +64,7 @@ public class PlayerController : MonoBehaviour
             Physics.Raycast(transform.position, transform.forward, out hit);
             if (Input.GetKeyDown(KeyCode.Tab))
                 Debug.Log("hi");
+
         }
 
         int ret;
@@ -68,12 +73,13 @@ public class PlayerController : MonoBehaviour
         wiiButton = wiiController.Button;
         if (ret > 0 && wiiButton.b)
         {
+            oldVecz = newVecz;
             throwSet = true;
             Vector3 accel = GetAccelVector();
             Vector3 accelNormal = accel;
             accelNormal.Normalize();
 
-            float sizeOfWidth = 60;
+            float sizeOfWidth = 2;
             leftRightMotion = accelNormal.x * (sizeOfWidth / 2);
 
             velocity_old = velocity;
@@ -81,25 +87,22 @@ public class PlayerController : MonoBehaviour
             velocity = Mathf.Sqrt(vVec.SqrMagnitude());
             velocity *= Mathf.Sign(accel.y);
             velocity -= velocity_old;
-
+            newVecz = leftRightMotion;
+               
             if (finalVel <= velocity)
             {
                 finalVel = velocity;
                 fVelTime = Time.time;
             }
-            ghostBall.transform.position = new Vector3(transform.position.x - 1, transform.position.y, leftRightMotion);
+            iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime, "onupdate", "ShowGhost"));
 
         }
         else if (!wiiButton.b && throwSet)
         {
             throwSet = false;
             Destroy(myBall);
-            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, leftRightMotion), Quaternion.identity);
-            Debug.Log(myBall.transform.position);
-            Debug.Log(leftRightMotion);
-            myBall.GetComponent<Rigidbody>().velocity = new Vector3(-finalVel * 2, 1f, 0f);
-            finalVel = 0;
-            velocity = 0;
+            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, newVecz), Quaternion.identity);
+            myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Abs(finalVel) * -2, 2f, 0f);
         }
 
         if (Time.time - fVelTime > 1f)
@@ -111,10 +114,6 @@ public class PlayerController : MonoBehaviour
 		{
 			TimeUp();
 		}
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 3, transform.position.y, transform.position.z), Quaternion.identity);
-		}
 	}
 
 	/*
@@ -125,6 +124,10 @@ public class PlayerController : MonoBehaviour
 		myPoints += points;
 	}
 
+    void ShowGhost(float gvec)
+    {
+        ghostBall.transform.position = new Vector3(transform.position.x - 1, transform.position.y, gvec);
+    }
 
 	/*
 	 * Only one player is active at a time.
