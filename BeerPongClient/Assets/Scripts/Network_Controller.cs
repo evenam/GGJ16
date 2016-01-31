@@ -295,6 +295,7 @@ public class Network_Controller : MonoBehaviour {
        OpforTextBox.SetActive(false);
        ServerTextBox.SetActive(false);
        UIButton.SetActive(false);
+       Camera.main.GetComponent<PlayerController>().RayOff();
     }
 }
 

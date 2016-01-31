@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private bool  throwSet;
     private bool  calibrated;
     private bool  isFirst;
+    private bool  rayOn;
     
     private ButtonData wiiButton;
     private float[] accelData;
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
         iTween.ScaleBy(gameObject, iTween.Hash("time", 0.6f, "oncomplete", "RumbleWii", "oncompletetarget", gameObject, "oncompleteparams", false));
         wiiController.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL);
         wiiController.DeactivateWiiMotionPlus();
+        rayOn = true;
 		playEnabled = true;
         throwSet = false;
         leftRightMotion = 0;
@@ -51,6 +53,14 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+
+        if (rayOn)
+        {
+            RaycastHit hit;
+            Physics.Raycast(transform.position, transform.forward, out hit);
+            if (Input.GetKeyDown(KeyCode.Tab))
+                Debug.Log("hi");
+        }
 
         int ret;
         float velocity_old = 0.0f;
@@ -169,6 +179,11 @@ public class PlayerController : MonoBehaviour
         Rigidbody rigidBalls = myBall.GetComponent<Rigidbody>();
         myBall.transform.position = new Vector3(xPos, yPos, zPos);
         rigidBalls.AddForce(xVel, yVel, zVel);
+    }
+
+    public void RayOff()
+    {
+        rayOn = false;
     }
 
     void RumbleWii(bool rum)
