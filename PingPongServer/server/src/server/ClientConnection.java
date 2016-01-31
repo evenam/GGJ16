@@ -2,6 +2,7 @@ package server;
 
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class ClientConnection implements Runnable 
 {
@@ -177,11 +178,17 @@ public class ClientConnection implements Runnable
 	
 	synchronized private void attemptClientWait(String input)
 	{
+		Scanner ss = new Scanner(in);
 		System.out.println("Sending opponent a game move: " + input);
 		stage = Stage.WAITING_OPPONENT;
 		if (opponent == null)
 			opponent = app.getConnection(opponentName);
 		opponent.opponentResponse(input);
+		opponent.opponentFlushFloater(ss.nextFloat());
+		opponent.opponentFlushFloater(ss.nextFloat());
+		opponent.opponentFlushFloater(ss.nextFloat());
+		opponent.opponentFlushFloater(ss.nextFloat());
+		opponent.opponentFlushFloater(ss.nextFloat());
 	}
 	
 	synchronized void opponentResponse(String resp)
@@ -191,12 +198,19 @@ public class ClientConnection implements Runnable
 			System.out.println("Received a game move: " + resp);
 			out.println(resp);
 			out.flush();
+			
 			stage = Stage.WAITING_CLIENT;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	synchronized void opponentFlushFloater(float er)
+	{
+		out.printf("%f\n", er);
+		out.flush();
 	}
 	
 	synchronized public String getName()

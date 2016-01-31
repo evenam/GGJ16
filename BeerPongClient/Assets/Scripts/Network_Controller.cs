@@ -78,7 +78,14 @@ public class Network_Controller : MonoBehaviour {
                     if (s.Equals("GAMEOVER") || s.Equals("XDISCONNECT"))
                         Application.Quit();
                     Debug.Log("STATE: " + s);
-                    PC.setState(s);
+                    Vector3 pos, vel;
+                    pos.x = float.Parse(recvMessage().Trim());
+                    pos.y = float.Parse(recvMessage().Trim());
+                    pos.z = float.Parse(recvMessage().Trim());
+                    vel.x = float.Parse(recvMessage().Trim());
+                    vel.y = float.Parse(recvMessage().Trim());
+                    vel.z = float.Parse(recvMessage().Trim());
+                    PC.setState(s, pos, vel);
                     stage = Stage.WAITING_CLIENT;
                 }
             }
@@ -314,7 +321,7 @@ public class Network_Controller : MonoBehaviour {
         Camera.main.GetComponent<PlayerController>().RayOff();
     }
 
-    public void sendClientGameState(string gameState)
+    public void sendClientGameState(string gameState, Vector3 pos, Vector3 vel)
     {
         if (stage == Stage.WAITING_CLIENT)
         {
@@ -322,6 +329,12 @@ public class Network_Controller : MonoBehaviour {
             newGameState += gameState.Substring(0, 6);
 
             sendMessage(newGameState + "\n");
+            sendMessage(pos.x.ToString() + "\n");
+            sendMessage(pos.y.ToString() + "\n");
+            sendMessage(pos.z.ToString() + "\n");
+            sendMessage(vel.x.ToString() + "\n");
+            sendMessage(vel.y.ToString() + "\n");
+            sendMessage(vel.z.ToString() + "\n");
             stage = Stage.WAITING_OPPONENT;
         }
     }
