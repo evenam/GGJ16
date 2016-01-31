@@ -5,6 +5,8 @@ Project("{3ABE5790-8E50-4D36-CD7A-ABC37FD4FCDE}") = "BeerPongClient", "Assembly-
 EndProject
 Project("{3ABE5790-8E50-4D36-CD7A-ABC37FD4FCDE}") = "BeerPongClient", "Assembly-CSharp.csproj", "{FB6E9F05-4AAB-4391-1F00-DA79A48C9730}"
 EndProject
+Project("{3ABE5790-8E50-4D36-CD7A-ABC37FD4FCDE}") = "BeerPongClient", "Assembly-CSharp-Editor.csproj", "{211543F4-5D97-1C52-2D81-C0D0648D477F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{FB6E9F05-4AAB-4391-1F00-DA79A48C9730}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB6E9F05-4AAB-4391-1F00-DA79A48C9730}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB6E9F05-4AAB-4391-1F00-DA79A48C9730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{211543F4-5D97-1C52-2D81-C0D0648D477F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211543F4-5D97-1C52-2D81-C0D0648D477F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211543F4-5D97-1C52-2D81-C0D0648D477F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211543F4-5D97-1C52-2D81-C0D0648D477F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
