@@ -30,16 +30,18 @@ public class PlayerController : MonoBehaviour
     public GameObject ghostBall;
     public Network_Controller app;
 
-    public CupBehavior cup1, cup2, cup3, cup4,
+    public GameObject cup1, cup2, cup3, cup4,
                        cup5, cup6, cup7, cup8,
                        cup9, cup10, cup11, cup12;
     private string cups;
 
 	private Vector3 rotOffset = Vector3.zero;
+    public GameObject flipper;
 
 	// Use this for initialization
 	void Start()
 	{
+        cups = "UUUUUUUUUUUU";
         if (usingWiimote)
         {
             WiimoteManager.FindWiimotes();
@@ -63,6 +65,23 @@ public class PlayerController : MonoBehaviour
 
         //UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
         EnablePlay();
+    }
+
+    public void setState(string st)
+    {
+        cups = st;
+        if (cups[0] == 'D') cup1.SetActive(false); else cup1.SetActive(true);
+        if (cups[1] == 'D') cup1.SetActive(false); else cup2.SetActive(true);
+        if (cups[2] == 'D') cup1.SetActive(false); else cup3.SetActive(true);
+        if (cups[3] == 'D') cup1.SetActive(false); else cup4.SetActive(true);
+        if (cups[4] == 'D') cup1.SetActive(false); else cup5.SetActive(true);
+        if (cups[5] == 'D') cup1.SetActive(false); else cup6.SetActive(true);
+        if (cups[6] == 'D') cup1.SetActive(false); else cup7.SetActive(true);
+        if (cups[7] == 'D') cup1.SetActive(false); else cup8.SetActive(true);
+        if (cups[8] == 'D') cup1.SetActive(false); else cup9.SetActive(true);
+        if (cups[9] == 'D') cup1.SetActive(false); else cup10.SetActive(true);
+        if (cups[10] == 'D') cup1.SetActive(false); else cup11.SetActive(true);
+        if (cups[11] == 'D') cup1.SetActive(false); else cup12.SetActive(true);
     }
 
     int calculateScore1(string theCups)
@@ -225,6 +244,11 @@ public class PlayerController : MonoBehaviour
     public void SetPosition(bool b)
     {
         isFirst = b;
+        if (b)
+        {
+            Debug.Log("Flipped to keep the cups correct");
+            flipper.transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
     }
 
     public void GameStatePush(short gdat, int xPos, int yPos, int zPos, int xVel, int yVel, int zVel)
@@ -268,6 +292,6 @@ public class PlayerController : MonoBehaviour
 
     public void passTurn(string shotType)
     {
-        app.sendClientGameState("YOLO");
+        app.sendClientGameState(cups);
     }
 }

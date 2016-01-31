@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CupBehavior : MonoBehaviour {
 
+    public int cupNumber;
+
 	// Use this for initialization
 	void Start () {
 	

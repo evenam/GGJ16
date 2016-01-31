@@ -47,6 +47,7 @@ public class Network_Controller : MonoBehaviour {
     [SerializeField] public GameObject OpforTextBox;
     [SerializeField] public GameObject UIButton;
     [SerializeField] public GameObject NotificationTextbox;
+    [SerializeField] public PlayerController PC;
 
     public void Start()
     {
@@ -76,7 +77,8 @@ public class Network_Controller : MonoBehaviour {
                 {
                     if (s == "GAMEOVER" || s == "XDISCONNECT")
                         Application.Quit();
-                    Debug.Log(s);
+                    Debug.Log("STATE: " + s);
+                    PC.setState(s);
                     stage = Stage.WAITING_CLIENT;
                 }
             }
