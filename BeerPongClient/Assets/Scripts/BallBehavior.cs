@@ -93,16 +93,21 @@ public class BallBehavior : MonoBehaviour
 	 * Kill me.
 	 */
 	void EndTurn()
-	{
-		myPlayer.ReceivePoints(points);
-		Destroy(gameObject);
+    {
         app.passTurn(0);
+        myPlayer.ReceivePoints(points);
+		Destroy(gameObject);
 	}
 
     void DisablePlay()
     {
         myPlayer.DisablePlay();
         EndTurn();
+    }
+
+    public void EnablePlay()
+    {
+        myPlayer.EnablePlay();
     }
 
     public void setApp(PlayerController App)

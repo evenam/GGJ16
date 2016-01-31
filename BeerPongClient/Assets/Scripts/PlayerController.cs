@@ -139,6 +139,7 @@ public class PlayerController : MonoBehaviour
                     myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * 2, 2f, newVecz / 10000);
                     Debug.Log(finalVel);
                     myBall.GetComponent<BallBehavior>().setApp(this);
+                    myBall.GetComponent<BallBehavior>().EnablePlay();
 
                     finalVel = 0;
                     velocity = 0;
@@ -155,6 +156,7 @@ public class PlayerController : MonoBehaviour
                 myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, 0), Quaternion.identity);
                 myBall.GetComponent<Rigidbody>().velocity = new Vector3(-7.2f, 2f, 0f);
                 myBall.GetComponent<BallBehavior>().setApp(this);
+                myBall.GetComponent<BallBehavior>().EnablePlay();
             }
 
 
