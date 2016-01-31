@@ -40,7 +40,12 @@ public class Network_Controller : MonoBehaviour {
         if(isStarting)
         {
             //GetServerName();
+<<<<<<< Updated upstream
             Debug.Log("Is Starting");
+=======
+            //Debug.Log("Is Starting");
+            debugMsg.text = "Is Starting";
+>>>>>>> Stashed changes
             SetupSocket();
         }
 
@@ -65,7 +70,12 @@ public class Network_Controller : MonoBehaviour {
             input = new StreamReader(netStream);
             if (socket.Connected)
             {
+<<<<<<< Updated upstream
                 Debug.Log("Connected");
+=======
+                //Debug.Log("Connected");
+                debugMsg.text = "Connected"; 
+>>>>>>> Stashed changes
                 isStarting = false;
             }
             
