@@ -12,13 +12,4 @@ public class KillZone : MonoBehaviour {
 	void Update () {
 	
 	}
-
-    void OnTriggerEnter(GameObject other)
-    {
-        Debug.Log("Kill Zone");
-        if (other.name.Contains("Ball"))
-        {
-            Destroy(other);
-        }
-    }
 }
