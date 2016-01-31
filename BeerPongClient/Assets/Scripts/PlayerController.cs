@@ -1,12 +1,3 @@
-<<<<<<< Updated upstream
-﻿using UnityEngine;
-using System.Collections;
-
-public class PlayerController : MonoBehaviour
-{
-	private bool  playEnabled;
-	private float timeStart;
-=======
 ﻿using UnityEngine;
 using System.Collections;
 using WiimoteApi;
@@ -15,37 +6,18 @@ public class PlayerController : MonoBehaviour
 {
 	private bool  playEnabled;
 	private float timeStart;
->>>>>>> Stashed changes
+	
 	private int   myPoints;
     private bool  calibrated;
     
     private ButtonData wiiButton;
     private float[] accelData;
 
-<<<<<<< Updated upstream
-    public GameObject pingPong;
+	private Wiimote wiiController;
+	public GameObject pingPong;
+	public GameObject testcup;
 
-	// Use this for initialization
-	void Start()
-	{
-		playEnabled = true;
-		myPoints = 0;
-
-        UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
-        EnablePlay();
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{
-		if (Time.time - timeStart > 30f && playEnabled)
-=======
-    private Wiimote wiiController;
-
-    public GameObject pingPong;
-    public GameObject testcup;
-
-    private Vector3 rotOffset = Vector3.zero;
+	private Vector3 rotOffset = Vector3.zero;
 
 	// Use this for initialization
 	void Start()
@@ -93,65 +65,13 @@ public class PlayerController : MonoBehaviour
             }
 
 		if (Time.time - timeStart > 30f && playEnabled)
->>>>>>> Stashed changes
-        {
+		{
 			TimeUp();
 		}
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(pingPong, new Vector3(transform.position.x - 3, transform.position.y, transform.position.z), Quaternion.identity);
-<<<<<<< Updated upstream
-        }
-	}
-
-	/*
-	 * Receive points from current ball.
-	 */
-	public void ReceivePoints(int points)
-	{
-		myPoints += points;
-	}
-
-
-	/*
-	 * Only one player is active at a time.
-	 * Start timer on activate.
-	 */
-	public bool IsEnabled()
-	{
-		return playEnabled;
-	}
-
-	public void EnablePlay()
-	{
-		playEnabled = true;
-		StartTimer();
-	}
-
-	public void DisablePlay()
-	{
-		playEnabled = false;
-	}
-
-
-	/*
-	 * Timer for player's turn.
-	 * 30 second timer.
-	 * Started on activate.
-	 * Can be reset if ball bounces back to player's own side when thrown.
-	 */
-	public void StartTimer()
-	{
-		timeStart = Time.time;
-	}
-
-	void TimeUp()
-	{
-		DisablePlay();
-	}
-}
-=======
-        }
+		}
 	}
 
 	/*
@@ -221,4 +141,3 @@ public class PlayerController : MonoBehaviour
         return new Vector3(accel_x, accel_y, accel_z);
     }
 }
->>>>>>> Stashed changes
