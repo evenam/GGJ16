@@ -78,6 +78,7 @@ public class Network_Controller : MonoBehaviour {
                         Application.Quit();
                     Debug.Log(s);
                     stage = Stage.WAITING_CLIENT;
+                    NotifyWithTimer("Your turn!", 3000);
                 }
             }
         }
@@ -329,6 +330,7 @@ public class Network_Controller : MonoBehaviour {
 
     public void NotifyWithTimer(string notification, int time)
     {
+        ClearNotification();
         Debug.Log(NotificationTextbox);
         NotificationTextbox.SetActive(true);
         Text input = NotificationTextbox.GetComponent<Text>();

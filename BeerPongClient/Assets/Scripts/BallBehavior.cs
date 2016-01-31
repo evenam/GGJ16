@@ -94,7 +94,7 @@ public class BallBehavior : MonoBehaviour
 	 */
 	void EndTurn()
     {
-        app.passTurn(0);
+        app.passTurn("");
         myPlayer.ReceivePoints(points);
 		Destroy(gameObject);
 	}
