@@ -94,72 +94,75 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("hi");
 
         }
-        
-        if (usingWiimote)
+
+        if (app.RespectMyAutoritah())
         {
-            int ret;
-            float velocity_old = 0.0f;
-            ret = wiiController.ReadWiimoteData();
-            wiiButton = wiiController.Button;
-            if (ret > 0 && wiiButton.b)
+            if (usingWiimote)
             {
-                oldVecz = newVecz;
-                throwSet = true;
-                Vector3 accel = GetAccelVector();
-                Vector3 accelNormal = accel;
-                accelNormal.Normalize();
+                int ret;
+                float velocity_old = 0.0f;
+                ret = wiiController.ReadWiimoteData();
+                wiiButton = wiiController.Button;
+                if (ret > 0 && wiiButton.b)
+                {
+                    oldVecz = newVecz;
+                    throwSet = true;
+                    Vector3 accel = GetAccelVector();
+                    Vector3 accelNormal = accel;
+                    accelNormal.Normalize();
 
-                float sizeOfWidth = 2;
-                leftRightMotion = accelNormal.x * (sizeOfWidth / 2);
+                    float sizeOfWidth = 2;
+                    leftRightMotion = accelNormal.x * (sizeOfWidth / 2);
 
-                velocity_old = velocity;
-                Vector2 vVec = new Vector2(accel.y, accel.z);
-                velocity = Mathf.Sqrt(vVec.SqrMagnitude());
-                velocity *= Mathf.Sign(accel.y);
-                velocity -= velocity_old;
-                newVecz = leftRightMotion;
+                    velocity_old = velocity;
+                    Vector2 vVec = new Vector2(accel.y, accel.z);
+                    velocity = Mathf.Sqrt(vVec.SqrMagnitude());
+                    velocity *= Mathf.Sign(accel.y);
+                    velocity -= velocity_old;
+                    newVecz = leftRightMotion;
 
-                if (finalVel >= velocity)
+                    if (finalVel >= velocity)
+                    {
+                        finalVel = velocity;
+                        fVelTime = Time.time;
+                    }
+                    iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime / 4.0f, "onupdate", "ShowGhost"));
+
+                    Debug.Log(finalVel);
+
+                }
+                else if (!wiiButton.b && throwSet)
+                {
+                    throwSet = false;
+                    Destroy(myBall);
+                    myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, newVecz), Quaternion.identity);
+                    myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * 2, 2f, newVecz / 10000);
+                    Debug.Log(finalVel);
+                    myBall.GetComponent<BallBehavior>().setApp(this);
+
+                    finalVel = 0;
+                    velocity = 0;
+                }
+
+                if (Time.time - fVelTime > 1f)
                 {
                     finalVel = velocity;
                     fVelTime = Time.time;
                 }
-                iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime / 4.0f, "onupdate", "ShowGhost"));
-
-                Debug.Log(finalVel);
-
             }
-            else if (!wiiButton.b && throwSet)
+            else if (Input.GetKeyDown(KeyCode.Space))
             {
-                throwSet = false;
-                Destroy(myBall);    
-                myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, newVecz), Quaternion.identity);
-                myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * 2, 2f, newVecz / 10000);
-                Debug.Log(finalVel);
+                myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, 0), Quaternion.identity);
+                myBall.GetComponent<Rigidbody>().velocity = new Vector3(-7.2f, 2f, 0f);
                 myBall.GetComponent<BallBehavior>().setApp(this);
-
-                finalVel = 0;
-                velocity = 0;
             }
 
-            if (Time.time - fVelTime > 1f)
+
+            if (Time.time - timeStart > 30f && playEnabled && false)
             {
-                finalVel = velocity;
-                fVelTime = Time.time;
+                TimeUp();
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, 0), Quaternion.identity);
-            myBall.GetComponent<Rigidbody>().velocity = new Vector3(-7.2f, 2f, 0f);
-            myBall.GetComponent<BallBehavior>().setApp(this);
-        }
-
-
-        if (Time.time - timeStart > 30f && playEnabled && false)
-		{
-			TimeUp();
-		}
 	}
 
 	/*

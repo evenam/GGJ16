@@ -158,8 +158,6 @@ public class ClientConnection implements Runnable
 		if (opponentName.equals(""))
 		{
 			opponentName = input;
-			out.println("OPPONENT_ACCEPTED");
-			out.flush();
 			opponent = app.getConnection(opponentName);
 			if (opponent != null)
 			{
@@ -214,6 +212,7 @@ public class ClientConnection implements Runnable
 	{
 		stage = Stage.WAITING_CLIENT;
 		System.out.println(name + "(" + threadNumber + ") going first. ");
+		out.println("OPPONENT_ACCEPTED");
 		out.println("FIRST");
 		out.flush();
 	}
@@ -222,6 +221,7 @@ public class ClientConnection implements Runnable
 	{
 		stage = Stage.WAITING_OPPONENT;
 		System.out.println(name + "(" + threadNumber + ") going second. ");
+		out.println("OPPONENT_ACCEPTED");
 		out.println("SECOND");
 		out.flush();
 	}

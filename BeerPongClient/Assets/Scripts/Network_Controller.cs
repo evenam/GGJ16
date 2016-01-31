@@ -336,6 +336,11 @@ public class Network_Controller : MonoBehaviour {
         else
             time = -1;
     }
+
+    public bool RespectMyAutoritah()
+    {
+        return (stage == Stage.WAITING_CLIENT);
+    }
 }
 
 
