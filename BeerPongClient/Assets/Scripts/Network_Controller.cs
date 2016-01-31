@@ -62,10 +62,10 @@ public class Network_Controller : MonoBehaviour {
 
     public void Update()
     {
-        //if (stage == Stage.GETTING_OPPONENTNAME || stage == Stage.GETTING_USERNAME)
-         //   EnableGUI();
-        //else
-        //{
+        if (stage == Stage.GETTING_OPPONENTNAME || stage == Stage.GETTING_USERNAME)
+            EnableGUI();
+        else
+        {
 
             DisableGUI();
 			
@@ -80,7 +80,7 @@ public class Network_Controller : MonoBehaviour {
                     stage = Stage.WAITING_CLIENT;
                 }
             }
-        //}
+        }
 
         if (notificationTimer > -1)
         {
