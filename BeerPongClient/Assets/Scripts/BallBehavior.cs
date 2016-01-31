@@ -12,6 +12,10 @@ public class BallBehavior : MonoBehaviour
 
     private PlayerController app = null;
 
+    public AudioSource tableHit;
+    public AudioSource cupHit;
+    public AudioSource bodyHit;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -54,6 +58,10 @@ public class BallBehavior : MonoBehaviour
 	{
 		if (other.name.Contains("Cup"))
         {
+            float tempPitch = cupHit.pitch;
+            cupHit.pitch += Random.Range(-1f, 1f);
+            cupHit.Play();
+            cupHit.pitch = tempPitch;
             app.KillCup(other.GetComponent<CupBehavior>().cupNumber);
 			if (bounced)
 				points = 2;
@@ -63,6 +71,10 @@ public class BallBehavior : MonoBehaviour
 		}
         else if (other.name == "Table")
         {
+            float tempPitch = tableHit.pitch;
+            tableHit.pitch += Random.Range(-1f, 1f);
+            tableHit.Play();
+            tableHit.pitch = tempPitch;
             Debug.Log("bounce");
 			bounced = true;
 		}
@@ -80,8 +92,16 @@ public class BallBehavior : MonoBehaviour
         {
             ResetTurn();
         }
-        if (other.name.Contains("OOB_DeathTrap"))
+        else if (other.name == "suitF01")
         {
+            float tempPitch = bodyHit.pitch;
+            bodyHit.pitch += Random.Range(-1f, 1f);
+            bodyHit.Play();
+            bodyHit.pitch = tempPitch;
+        }
+        else if (other.name.Contains("OOB_DeathTrap"))
+        {
+            myPlayer.PlayMiss();
             points = 0;
             DisablePlay();
         }

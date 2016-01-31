@@ -32,7 +32,10 @@ public class PlayerController : MonoBehaviour
 	public GameObject pingPong;
     public GameObject ghostBall;
     public Network_Controller app;
-    public GameObject cursor;
+    public AudioSource shotSound;
+    public AudioSource music;
+    public AudioClip[] makeShots;
+    public AudioClip[] missShots;
 
     public GameObject cup1, cup2, cup3, cup4,
                        cup5, cup6, cup7, cup8,
@@ -46,6 +49,7 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+        music.Play();
         cups = "UUUUUUUUUUUU";
         if (usingWiimote)
         {
@@ -331,6 +335,9 @@ public class PlayerController : MonoBehaviour
 
     public void KillCup(int number)
     {
+        shotSound.clip = makeShots[Random.Range(0, 3)];
+        shotSound.Play();
+        shotSound.clip = null;
         string newState = "";
         for (int i = 0; i < 12; i++)
         {
@@ -342,6 +349,12 @@ public class PlayerController : MonoBehaviour
         cups = newState;
     }
 
+    public void PlayMiss()
+    {
+        shotSound.clip = missShots[Random.Range(0, 2)];
+        shotSound.Play();
+        shotSound.clip = null;
+    }
 
     public void IncreaseDrunk()
     {
