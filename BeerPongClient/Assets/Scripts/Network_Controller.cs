@@ -318,6 +318,9 @@ public class Network_Controller : MonoBehaviour {
     {
         if (stage == Stage.WAITING_CLIENT)
         {
+            string newGameState = gameState.Substring(6, 6);
+            newGameState += gameState.Substring(0, 6);
+
             sendMessage(gameState + "\n");
             stage = Stage.WAITING_OPPONENT;
         }
