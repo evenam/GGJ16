@@ -178,17 +178,26 @@ public class ClientConnection implements Runnable
 	
 	synchronized private void attemptClientWait(String input)
 	{
-		Scanner ss = new Scanner(in);
-		System.out.println("Sending opponent a game move: " + input);
-		stage = Stage.WAITING_OPPONENT;
-		if (opponent == null)
-			opponent = app.getConnection(opponentName);
-		opponent.opponentResponse(input);
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
+		try
+		{
+			Scanner ss = new Scanner(socket.getInputStream());
+			System.out.println("Sending opponent a game move: " + input);
+			stage = Stage.WAITING_OPPONENT;
+			if (opponent == null)
+				opponent = app.getConnection(opponentName);
+			opponent.opponentResponse(input);
+			/*opponent.opponentFlushFloater(ss.nextFloat());
+			opponent.opponentFlushFloater(ss.nextFloat());
+			opponent.opponentFlushFloater(ss.nextFloat());
+			opponent.opponentFlushFloater(ss.nextFloat());
+			opponent.opponentFlushFloater(ss.nextFloat());
+			opponent.opponentFlushFloater(ss.nextFloat());
+			opponent.out.flush();*/
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	synchronized void opponentResponse(String resp)
@@ -209,8 +218,9 @@ public class ClientConnection implements Runnable
 	
 	synchronized void opponentFlushFloater(float er)
 	{
-		out.printf("%f\n", er);
-		out.flush();
+		out.printf("%f", er);
+		out.println();
+		System.out.printf("Received a float of %f\n", er);
 	}
 	
 	synchronized public String getName()
