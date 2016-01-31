@@ -9,6 +9,8 @@ public class BallBehavior : MonoBehaviour
 	private Camera playerObj;
 	private PlayerController myPlayer;
 
+    private PlayerController app = null;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -57,7 +59,7 @@ public class BallBehavior : MonoBehaviour
 		}
         else if (other.name.Contains("TriCup"))
         {
-			points = 5;
+			points = 6;
             DisablePlay();
 		} 
 		else if (other.name.Contains("Island"))
@@ -66,10 +68,15 @@ public class BallBehavior : MonoBehaviour
             DisablePlay();
 		}
 		else if (other.name.Contains("ReturnTrigger"))
-		{
-			ResetTurn();
-		}
-	}
+        {
+            ResetTurn();
+        }
+        if (other.name.Contains("OOB_DeathTrap"))
+        {
+            points = 0;
+            DisablePlay();
+        }
+    }
 
 	/*
 	 * Reset when ball returns to player's side.
@@ -89,11 +96,17 @@ public class BallBehavior : MonoBehaviour
 	{
 		myPlayer.ReceivePoints(points);
 		Destroy(gameObject);
+        app.passTurn(0);
 	}
 
     void DisablePlay()
     {
         myPlayer.DisablePlay();
         EndTurn();
+    }
+
+    public void setApp(PlayerController App)
+    {
+        app = App;
     }
 }

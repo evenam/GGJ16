@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public bool usingWiimote;
 	public GameObject pingPong;
     public GameObject ghostBall;
+    public Network_Controller app;
 
 	private Vector3 rotOffset = Vector3.zero;
 
@@ -57,10 +58,32 @@ public class PlayerController : MonoBehaviour
 
         //UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
         EnablePlay();
-	}
-	
-	// Update is called once per frame
-	void Update()
+    }
+
+    int calculateScore1(string theCups)
+    {
+        int score = 0;
+        for (int i = 0; i < 6; i++)
+        {
+            if (theCups[i] == 'D')
+                score++;
+        }
+        return score;
+    }
+
+    int calculateScore2(string theCups)
+    {
+        int score = 0;
+        for (int i = 6; i < 12; i++)
+        {
+            if (theCups[i] == 'D')
+                score++;
+        }
+        return score;
+    }
+
+    // Update is called once per frame
+    void Update()
 	{
 
         if (rayOn)
@@ -71,7 +94,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("hi");
 
         }
-
+        
         if (usingWiimote)
         {
             int ret;
@@ -96,12 +119,12 @@ public class PlayerController : MonoBehaviour
                 velocity -= velocity_old;
                 newVecz = leftRightMotion;
 
-                if (finalVel <= velocity)
+                if (finalVel >= velocity)
                 {
                     finalVel = velocity;
                     fVelTime = Time.time;
                 }
-                iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime, "onupdate", "ShowGhost"));
+                iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime / 4.0f, "onupdate", "ShowGhost"));
 
                 Debug.Log(finalVel);
 
@@ -109,27 +132,31 @@ public class PlayerController : MonoBehaviour
             else if (!wiiButton.b && throwSet)
             {
                 throwSet = false;
-                Destroy(myBall);
+                Destroy(myBall);    
                 myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, newVecz), Quaternion.identity);
-                myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(-finalVel, 0) * 2, 2f, 0f);
+                myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * 2, 2f, newVecz / 10000);
                 Debug.Log(finalVel);
+                myBall.GetComponent<BallBehavior>().setApp(this);
+
+                finalVel = 0;
+                velocity = 0;
             }
 
             if (Time.time - fVelTime > 1f)
             {
                 finalVel = velocity;
+                fVelTime = Time.time;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, 0), Quaternion.identity);
-            myBall.GetComponent<Rigidbody>().velocity = new Vector3(14, 2f, 0f);
-            myBall.transform.Rotate(0f, 180f, 0f);
+            myBall.GetComponent<Rigidbody>().velocity = new Vector3(-7.2f, 2f, 0f);
+            myBall.GetComponent<BallBehavior>().setApp(this);
         }
-        Debug.Log(myBall.GetComponent<Rigidbody>().velocity);
 
 
-		if (Time.time - timeStart > 30f && playEnabled && false)
+        if (Time.time - timeStart > 30f && playEnabled && false)
 		{
 			TimeUp();
 		}
@@ -145,7 +172,7 @@ public class PlayerController : MonoBehaviour
 
     void ShowGhost(float gvec)
     {
-        ghostBall.transform.position = new Vector3(transform.position.x - 1, transform.position.y, gvec);
+        ghostBall.transform.position    = new Vector3(transform.position.x - 1, transform.position.y, gvec);
     }
 
 	/*
@@ -227,5 +254,10 @@ public class PlayerController : MonoBehaviour
         Vector3 ret = new Vector3(accel_x, accel_y, accel_z);
         //Debug.Log(ret);
         return ret;
+    }
+
+    public void passTurn(short data)
+    {
+        app.sendClientGameState("YOLO");
     }
 }

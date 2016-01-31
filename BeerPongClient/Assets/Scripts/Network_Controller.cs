@@ -50,8 +50,9 @@ public class Network_Controller : MonoBehaviour {
 
     public void Start()
     {
-        SetupSocket();
+        //SetupSocket();
         stage = Stage.GETTING_USERNAME;
+        stage = Stage.WAITING_CLIENT;
         socket.NoDelay = true;
         notificationTimer = -1;
 
@@ -71,9 +72,9 @@ public class Network_Controller : MonoBehaviour {
             if (stage == Stage.WAITING_OPPONENT)
             {
                 string s = recvMessage();
-                if (s.Length == 27)
+                if (s.Length > 0)
                 {
-                    streamHandler(s);
+                    Debug.Log(s);
                     stage = Stage.WAITING_CLIENT;
                 }
             }
@@ -308,6 +309,7 @@ public class Network_Controller : MonoBehaviour {
         {
             sendMessage(gameState + "\n");
             stage = Stage.WAITING_OPPONENT;
+            Notify("Waiting for opponent...");
         }
     }
 
@@ -325,9 +327,10 @@ public class Network_Controller : MonoBehaviour {
 
     public void NotifyWithTimer(string notification, int time)
     {
-        InputField input = NotificationTextbox.GetComponent<InputField>();
-        input.text = notification;
+        Debug.Log(NotificationTextbox);
         NotificationTextbox.SetActive(true);
+        Text input = NotificationTextbox.GetComponent<Text>();
+        input.text = notification;
         if (time > -1)
             notificationTimer = time;
         else
