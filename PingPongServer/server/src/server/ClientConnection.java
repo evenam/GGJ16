@@ -13,7 +13,7 @@ public class ClientConnection implements Runnable
 	private int threadNumber;
 	private ServerMain app;
 	private ClientConnection opponent;
-	private int turn;
+	private String opponentName;
 	Stage stage; 
 	
 	private enum Stage
@@ -29,8 +29,8 @@ public class ClientConnection implements Runnable
 		threadNumber = num;
 		socket = sock;
 		app = application;
-		turn = -1;
 		System.out.println("Accepted user on thread " + num);
+		opponentName = "";
 		
 		try
 		{
@@ -81,17 +81,17 @@ public class ClientConnection implements Runnable
 							e.printStackTrace();
 						}
 					}
-					if (stage == Stage.GETTING_USERNAME) 
+					else if (stage == Stage.GETTING_USERNAME) 
 					{
 						attemptGetUsername(input);
 						continue;
 					}
-					if (stage == Stage.GETTING_OPPONENTNAME) 
+					else if (stage == Stage.GETTING_OPPONENTNAME) 
 					{
 						attemptGetOpponentname(input);
 						continue;
 					}
-					if (stage == Stage.WAITING_CLIENT) 
+					else if (stage == Stage.WAITING_CLIENT) 
 					{
 						attemptClientWait(input);
 						continue;
@@ -155,32 +155,24 @@ public class ClientConnection implements Runnable
 	
 	private void attemptGetOpponentname(String input)
 	{
-		String opponentName = input;
-		opponent = app.getConnection(opponentName);
-		if (opponent != null)
+		if (opponentName.equals(""))
 		{
-			System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") accepted. ");
-
-			if (getTurn() == -1)
+			opponentName = input;
+			out.println("OPPONENT_ACCEPTED");
+			out.flush();
+			opponent = app.getConnection(opponentName);
+			if (opponent != null)
 			{
-				System.out.println("Assigning (" + threadNumber + ") " + getName() + " as first player and the opponent as the second player");
-				stage = Stage.WAITING_CLIENT;
-				out.println("FIRST");
-				out.flush();
-				setTurn(1);
-				opponent.setTurn(2);
+				System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") accepted. ");
+				opponent.setOpponent(this);
+				opponent.goFirst();
+				goSecond();
 			}
 			else
 			{
-				System.out.println(getName() + " (" + threadNumber + " has been assigned as 2nd");
-				stage = Stage.WAITING_OPPONENT;
-				out.println("SECOND");
-				out.flush();
+				System.out.println("Waiting on opponent in thread " + threadNumber + " (" + opponentName + "). ");
+				stage = Stage.GETTING_OPPONENTNAME;
 			}
-		}
-		else
-		{
-			System.out.println("(" + threadNumber + ") " + getName() + " is waiting for an opponent...");
 		}
 	}
 	
@@ -188,6 +180,8 @@ public class ClientConnection implements Runnable
 	{
 		System.out.println("Sending opponent a game move: " + input);
 		stage = Stage.WAITING_OPPONENT;
+		if (opponent == null)
+			opponent = app.getConnection(opponentName);
 		opponent.opponentResponse(input);
 	}
 	
@@ -215,14 +209,25 @@ public class ClientConnection implements Runnable
 	{
 		name = newName;
 	}
-
-	synchronized void setTurn(int newTurn)
+	
+	synchronized public void goFirst()
 	{
-		turn = newTurn;
+		stage = Stage.WAITING_CLIENT;
+		System.out.println(name + "(" + threadNumber + ") going first. ");
+		out.println("FIRST");
+		out.flush();
 	}
-
-	synchronized int getTurn()
+	
+	synchronized public void goSecond()
 	{
-		return turn;
+		stage = Stage.WAITING_OPPONENT;
+		System.out.println(name + "(" + threadNumber + ") going second. ");
+		out.println("SECOND");
+		out.flush();
+	}
+	
+	synchronized public void setOpponent(ClientConnection c)
+	{
+		opponent = c;
 	}
 }

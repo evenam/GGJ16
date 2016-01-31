@@ -32,17 +32,20 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-        WiimoteManager.FindWiimotes();
-        wiiController = WiimoteManager.Wiimotes[0];
-        RumbleWii(true);
-        iTween.ScaleBy(gameObject, iTween.Hash("time", 0.6f, "oncomplete", "RumbleWii", "oncompletetarget", gameObject, "oncompleteparams", false));
-        wiiController.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL);
-        wiiController.DeactivateWiiMotionPlus();
+        //WiimoteManager.FindWiimotes();
+        //wiiController = WiimoteManager.Wiimotes[0];
+        //RumbleWii(true);
+        //iTween.ScaleBy(gameObject, iTween.Hash("time", 0.6f, "oncomplete", "RumbleWii", "oncompletetarget", gameObject, "oncompleteparams", false));
+        //wiiController.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL);
+        //wiiController.DeactivateWiiMotionPlus();
         rayOn = true;
 		playEnabled = true;
         throwSet = false;
+<<<<<<< HEAD
         oldVecz = 0;
         newVecz = 0;
+=======
+>>>>>>> 44d0b64b4494111c5043b892c17362eeedc0bb84
         leftRightMotion = 0;
 		myPoints = 0;
         velocity = 0;
@@ -64,6 +67,7 @@ public class PlayerController : MonoBehaviour
             Physics.Raycast(transform.position, transform.forward, out hit);
             if (Input.GetKeyDown(KeyCode.Tab))
                 Debug.Log("hi");
+<<<<<<< HEAD
 
         }
 
@@ -97,10 +101,43 @@ public class PlayerController : MonoBehaviour
             iTween.ValueTo(gameObject, iTween.Hash("from", oldVecz, "to", newVecz, "time", Time.deltaTime, "onupdate", "ShowGhost"));
 
         }
+=======
+        }
+
+        int ret;
+        float velocity_old = 0.0f;
+        //ret = wiiController.ReadWiimoteData();
+        //wiiButton = wiiController.Button;
+       /*if (ret > 0 && wiiButton.b)
+        {
+            throwSet = true;
+            Vector3 accel = GetAccelVector();
+            Vector3 accelNormal = accel;
+            accelNormal.Normalize();
+
+            float sizeOfWidth = 60;
+            leftRightMotion = accelNormal.x * (sizeOfWidth / 2);
+
+            velocity_old = velocity;
+            Vector2 vVec = new Vector2(accel.y, accel.z);
+            velocity = Mathf.Sqrt(vVec.SqrMagnitude());
+            velocity *= Mathf.Sign(accel.y);
+            velocity -= velocity_old;
+
+            if (finalVel <= velocity)
+            {
+                finalVel = velocity;
+                fVelTime = Time.time;
+            }
+            ghostBall.transform.position = new Vector3(transform.position.x - 1, transform.position.y, leftRightMotion);
+
+        }
+>>>>>>> 44d0b64b4494111c5043b892c17362eeedc0bb84
         else if (!wiiButton.b && throwSet)
         {
             throwSet = false;
             Destroy(myBall);
+<<<<<<< HEAD
             myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, newVecz), Quaternion.identity);
             myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Abs(finalVel) * -2, 2f, 0f);
         }
@@ -164,6 +201,75 @@ public class PlayerController : MonoBehaviour
 	void TimeUp()
 	{
 		DisablePlay();
+=======
+            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, leftRightMotion), Quaternion.identity);
+            Debug.Log(myBall.transform.position);
+            Debug.Log(leftRightMotion);
+            myBall.GetComponent<Rigidbody>().velocity = new Vector3(-finalVel * 2, 1f, 0f);
+            finalVel = 0;
+            velocity = 0;
+        }
+
+        if (Time.time - fVelTime > 1f)
+        {
+            finalVel = velocity;
+        }
+
+		if (Time.time - timeStart > 30f && playEnabled && false)
+		{
+			TimeUp();
+		}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 3, transform.position.y, transform.position.z), Quaternion.identity);
+		}*/
+	}   
+
+	/*
+	 * Receive points from current ball.
+	 */
+	public void ReceivePoints(int points)
+	{
+		myPoints += points;
+	}
+
+
+	/*
+	 * Only one player is active at a time.
+	 * Start timer on activate.
+	 */
+	public bool IsEnabled()
+	{
+		return playEnabled;
+	}
+
+	public void EnablePlay()
+	{
+		playEnabled = true;
+		StartTimer();
+	}
+
+	public void DisablePlay()
+	{
+		playEnabled = false;
+	}
+
+
+	/*
+	 * Timer for player's turn.
+	 * 30 second timer.
+	 * Started on activate.
+	 * Can be reset if ball bounces back to player's own side when thrown.
+	 */
+	public void StartTimer()
+	{
+		timeStart = Time.time;
+	}
+
+	void TimeUp()
+	{
+		DisablePlay();
+>>>>>>> 44d0b64b4494111c5043b892c17362eeedc0bb84
 	}
 
     public void SetPosition(bool b)
