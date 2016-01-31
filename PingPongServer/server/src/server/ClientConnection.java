@@ -101,7 +101,8 @@ public class ClientConnection implements Runnable
 				{
 					try
 					{
-						out.println("XDISCONNECT");
+						opponent.out.println("XDISCONNECT");
+						opponent.out.flush();
 					}
 					catch (Exception e)
 					{
