@@ -14,6 +14,8 @@ public class Network_Controller : MonoBehaviour {
     private string ADDR = "130.39.94.243";
     private int PORT = 8904;
     private TcpClient socket;
+	private Camera playerObject;
+	private PlayerController myPlayer;
 
     private enum Stage
     {
@@ -30,6 +32,7 @@ public class Network_Controller : MonoBehaviour {
     private byte[] recvBuffer;
 
     private byte tag;
+	private byte first;
     private short gamedata;
     private int xPos;
     private int yPos;
@@ -51,6 +54,9 @@ public class Network_Controller : MonoBehaviour {
         SetupSocket();
         stage = Stage.GETTING_USERNAME;
         socket.NoDelay = true;
+
+		playerObject = Camera.main;
+		myPlayer = playerObject.GetComponent<PlayerController>();
     }
 
     public void Update()
@@ -61,6 +67,7 @@ public class Network_Controller : MonoBehaviour {
         {
 
             DisableGUI();
+			// stages
             sendMessage("YOLO\n");
             recvMessage();
 
@@ -99,7 +106,12 @@ public class Network_Controller : MonoBehaviour {
 
         Debug.Log("Sent in opponent name");
 
-        // complete
+		if (stage == Stage.WAITING_CLIENT) {
+			response = input.ReadLine.Trim ();
+			myPlayer.SetPosition (response.Equals ("FIRST"));
+			if (response.Equals ("FIRST"))
+				stage = Stage.WAITING_OPPONENT;
+		}
     }
 
     /**
@@ -247,13 +259,14 @@ public class Network_Controller : MonoBehaviour {
             yVel = BitConverter.ToInt32(new byte[] { data[22], data[21], data[20], data[19] }, 0);
             zVel = BitConverter.ToInt32(new byte[] { data[26], data[25], data[24], data[23] }, 0);
 
+			GameStateUpdate ();
             Debug.Log("Data Received: " + gamedata + " " + xPos + " " + yPos + " " + zPos + " " + xVel + " " + yVel + " " + zVel);
         }   
         else if (tag == 'X')
         {
             stage = Stage.GETTING_USERNAME;
         }
-            
+           
     }
 
     public void OnApplicationQuit()
@@ -265,7 +278,7 @@ public class Network_Controller : MonoBehaviour {
 
     public void GameStateUpdate()
     {
-
+		myPlayer.GameStateUpdate(gamedata, xPos, yPos, zPos, xVel, yVel, zVel);
     }
 
     public void EnableGUI()
