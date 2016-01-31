@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using WiimoteApi;
 
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
 	private Vector3 rotOffset = Vector3.zero;
     public GameObject flipper;
+    public Text scoreBoard;
 
 	// Use this for initialization
 	void Start()
@@ -91,7 +93,10 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             if (theCups[i] == 'D')
+            {
                 score++;
+                IncreaseDrunk();
+            }
         }
         return score;
     }
@@ -110,7 +115,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-
+        UpdateScore();
         if (rayOn)
         {
             RaycastHit hit;
@@ -327,5 +332,25 @@ public class PlayerController : MonoBehaviour
                 newState += cups[i];
         }
         cups = newState;
+    }
+
+
+    public void IncreaseDrunk()
+    {
+        Camera.main.GetComponent<Draaank>().AddDrunk();
+        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount += 10;
+    }
+
+    public void UpdateScore()
+    {
+        int op = 0;
+        int user = 0;
+        for(int i = 0; i<6; i++)
+            if (cups[i] == 'D')
+                op++;
+        for (int i = 6; i < 12; i++)
+            if (cups[i] == 'D')
+                user++;
+        scoreBoard.text = user +" : " + op;
     }
 }

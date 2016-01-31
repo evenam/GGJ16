@@ -20,4 +20,9 @@ public class Draaank : MonoBehaviour {
         material.SetFloat("_Drunk", Drunk);
         Graphics.Blit(source, destination, material);
     }
+
+    public void AddDrunk()
+    {
+        Drunk += 10;
+    }
 }
