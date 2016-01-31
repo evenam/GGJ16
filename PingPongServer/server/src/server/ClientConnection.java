@@ -13,6 +13,7 @@ public class ClientConnection implements Runnable
 	private int threadNumber;
 	private ServerMain app;
 	private ClientConnection opponent;
+	private int turn;
 	Stage stage; 
 	
 	private enum Stage
@@ -28,6 +29,7 @@ public class ClientConnection implements Runnable
 		threadNumber = num;
 		socket = sock;
 		app = application;
+		turn = -1;
 		System.out.println("Accepted user on thread " + num);
 		
 		try
@@ -155,18 +157,30 @@ public class ClientConnection implements Runnable
 	{
 		String opponentName = input;
 		opponent = app.getConnection(opponentName);
-		if (opponent == null)
+		if (opponent != null)
 		{
-			out.println("OPPONENT_REJECTED");
-			out.flush();
-			System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") rejected. ");
+			System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") accepted. ");
+
+			if (getTurn() == -1)
+			{
+				System.out.println("Assigning (" + threadNumber + ") " + getName() + " as first player and the opponent as the second player");
+				stage = Stage.WAITING_CLIENT;
+				out.println("FIRST");
+				out.flush();
+				setTurn(1);
+				opponent.setTurn(2);
+			}
+			else
+			{
+				System.out.println(getName() + " (" + threadNumber + " has been assigned as 2nd");
+				stage = Stage.WAITING_OPPONENT;
+				out.println("SECOND");
+				out.flush();
+			}
 		}
 		else
 		{
-			System.out.println("Opponent of thread " + threadNumber + " (" + opponentName + ") accepted. ");
-			out.println("OPPONENT_ACCPETED");
-			out.flush();
-			stage = Stage.WAITING_CLIENT;
+			System.out.println("(" + threadNumber + ") " + getName() + " is waiting for an opponent...");
 		}
 	}
 	
@@ -200,5 +214,15 @@ public class ClientConnection implements Runnable
 	synchronized public void setName(String newName)
 	{
 		name = newName;
+	}
+
+	synchronized void setTurn(int newTurn)
+	{
+		turn = newTurn;
+	}
+
+	synchronized int getTurn()
+	{
+		return turn;
 	}
 }
