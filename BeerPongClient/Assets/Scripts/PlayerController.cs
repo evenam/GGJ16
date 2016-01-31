@@ -268,7 +268,6 @@ public class PlayerController : MonoBehaviour
 
     public void passTurn(string shotType)
     {
-        app.NotifyWithTimer("Nice " + shotType + " shot!", 4000);
         app.sendClientGameState("YOLO");
     }
 }

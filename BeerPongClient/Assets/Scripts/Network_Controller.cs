@@ -62,10 +62,10 @@ public class Network_Controller : MonoBehaviour {
 
     public void Update()
     {
-        if (stage == Stage.GETTING_OPPONENTNAME || stage == Stage.GETTING_USERNAME)
-            EnableGUI();
-        else
-        {
+        //if (stage == Stage.GETTING_OPPONENTNAME || stage == Stage.GETTING_USERNAME)
+         //   EnableGUI();
+        //else
+        //{
 
             DisableGUI();
 			
@@ -78,10 +78,9 @@ public class Network_Controller : MonoBehaviour {
                         Application.Quit();
                     Debug.Log(s);
                     stage = Stage.WAITING_CLIENT;
-                    NotifyWithTimer("Your turn!", 3000);
                 }
             }
-        }
+        //}
 
         if (notificationTimer > -1)
         {
@@ -89,6 +88,11 @@ public class Network_Controller : MonoBehaviour {
             if (notificationTimer <= 0)
                 NotificationTextbox.SetActive(false);
         }
+
+        if (stage == Stage.WAITING_CLIENT)
+            Notify("Your turn!");
+        else if (stage == Stage.WAITING_OPPONENT)
+            Notify("Waiting on opponent...");
     }
 
     public void InitializeConnection()
@@ -314,7 +318,6 @@ public class Network_Controller : MonoBehaviour {
         {
             sendMessage(gameState + "\n");
             stage = Stage.WAITING_OPPONENT;
-            Notify("Waiting for opponent...");
         }
     }
 
