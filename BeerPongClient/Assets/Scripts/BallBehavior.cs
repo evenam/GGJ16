@@ -17,7 +17,6 @@ public class BallBehavior : MonoBehaviour
 
         playerObj = Camera.main;
         myPlayer  = playerObj.GetComponent<PlayerController>();
-        Debug.Log(myPlayer.IsEnabled());
 	}
 	
 	// Update is called once per frame
