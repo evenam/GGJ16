@@ -8,6 +8,7 @@ public class BallBehavior : MonoBehaviour
 
 	private Camera playerObj;
 	private PlayerController myPlayer;
+    float lifetime = 10.0f; // 10 seconds
 
     private PlayerController app = null;
 
@@ -24,6 +25,13 @@ public class BallBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+
+        lifetime -= Time.deltaTime;
+        if (lifetime <= 0.0f)
+        {
+            DisablePlay();
+        }
+
 		/*
 		 * When player runs out of time.
 		 */
