@@ -9,10 +9,12 @@ public class PlayerController : MonoBehaviour
 	
 	private int   myPoints;
     private bool  calibrated;
+    private bool isFirst;
     
     private ButtonData wiiButton;
     private float[] accelData;
 
+    private GameObject myBall;
 	private Wiimote wiiController;
 	public GameObject pingPong;
 	public GameObject testcup;
@@ -86,7 +88,7 @@ public class PlayerController : MonoBehaviour
 		}
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(pingPong, new Vector3(transform.position.x - 3, transform.position.y, transform.position.z), Quaternion.identity);
+            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 3, transform.position.y, transform.position.z), Quaternion.identity);
 		}
 	}
 
@@ -135,6 +137,24 @@ public class PlayerController : MonoBehaviour
 	{
 		DisablePlay();
 	}
+
+    public void SetPosition(bool b)
+    {
+        isFirst = b;
+    }
+
+    public void GameStatePush(short gdat, int xPos, int yPos, int zPos, int xVel, int yVel, int zVel)
+    {
+
+    }
+
+    public void GameStateUpdate(short gdat, int xPos, int yPos, int zPos, int xVel, int yVel, int zVel)
+    {
+        // gdat
+        Rigidbody rigidBalls = myBall.GetComponent<Rigidbody>();
+        myBall.transform.position = new Vector3(xPos, yPos, zPos);
+        rigidBalls.AddForce(xVel, yVel, zVel);
+    }
 
     void RumbleWii(bool rum)
     {
