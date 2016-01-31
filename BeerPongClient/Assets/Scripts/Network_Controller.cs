@@ -296,6 +296,7 @@ public class Network_Controller : MonoBehaviour {
         UserTextBox.SetActive(true);
         OpforTextBox.SetActive(true);
         UIButton.SetActive(true);
+        NotificationTextbox.SetActive(false);
     }
 
     public void DisableGUI()
@@ -303,7 +304,8 @@ public class Network_Controller : MonoBehaviour {
        UserTextBox.SetActive(false);
        OpforTextBox.SetActive(false);
        UIButton.SetActive(false);
-       Camera.main.GetComponent<PlayerController>().RayOff();
+       NotificationTextbox.SetActive(true);
+        Camera.main.GetComponent<PlayerController>().RayOff();
     }
 
     public void sendClientGameState(string gameState)
@@ -318,7 +320,7 @@ public class Network_Controller : MonoBehaviour {
 
     public void ClearNotification()
     {
-        InputField input = NotificationTextbox.GetComponent<InputField>();
+        Text input = NotificationTextbox.GetComponent<Text>();
         input.text = "";
         NotificationTextbox.SetActive(false);
     }
