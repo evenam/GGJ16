@@ -59,20 +59,11 @@ public class Network_Controller : MonoBehaviour {
             EnableGUI();
         else
         {
-<<<<<<< Updated upstream
-            //GetServerName();
-<<<<<<< Updated upstream
-            Debug.Log("Is Starting");
-=======
-            //Debug.Log("Is Starting");
-            debugMsg.text = "Is Starting";
->>>>>>> Stashed changes
-            SetupSocket();
-=======
+
             DisableGUI();
             sendMessage("YOLO\n");
             recvMessage();
->>>>>>> Stashed changes
+
         }
     }
 
@@ -125,16 +116,8 @@ public class Network_Controller : MonoBehaviour {
             input = new StreamReader(netStream);
             if (socket.Connected)
             {
-<<<<<<< Updated upstream
                 Debug.Log("Connected");
-<<<<<<< Updated upstream
-=======
-                //Debug.Log("Connected");
-                debugMsg.text = "Connected"; 
->>>>>>> Stashed changes
-                isStarting = false;
-=======
->>>>>>> Stashed changes
+
             }
             
         } catch(Exception e) {
