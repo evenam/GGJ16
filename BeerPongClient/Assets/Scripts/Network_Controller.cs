@@ -45,14 +45,11 @@ public class Network_Controller : MonoBehaviour {
 
     [SerializeField] public GameObject UserTextBox;
     [SerializeField] public GameObject OpforTextBox;
-    [SerializeField] public GameObject ServerTextBox;
     [SerializeField] public GameObject UIButton;
     [SerializeField] public GameObject NotificationTextbox;
 
     public void Start()
     {
-        InputField i = ServerTextBox.GetComponent<InputField>();
-        i.text = ADDR;
         SetupSocket();
         stage = Stage.GETTING_USERNAME;
         socket.NoDelay = true;
@@ -177,16 +174,6 @@ public class Network_Controller : MonoBehaviour {
 
 
     /**
-    *Gets server name from text inputfield
-    */
-    public void GetServerName()
-    {
-        InputField input = ServerTextBox.GetComponent<InputField>();
-        ADDR = input.text;
-    }
-
-
-    /**
     *Sends user name from text inputfield
     *to server.
     */
@@ -304,7 +291,6 @@ public class Network_Controller : MonoBehaviour {
     {
         UserTextBox.SetActive(true);
         OpforTextBox.SetActive(true);
-        ServerTextBox.SetActive(true);
         UIButton.SetActive(true);
     }
 
@@ -312,7 +298,6 @@ public class Network_Controller : MonoBehaviour {
     {
        UserTextBox.SetActive(false);
        OpforTextBox.SetActive(false);
-       ServerTextBox.SetActive(false);
        UIButton.SetActive(false);
        Camera.main.GetComponent<PlayerController>().RayOff();
     }
