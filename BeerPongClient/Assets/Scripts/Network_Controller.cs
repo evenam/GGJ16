@@ -50,9 +50,9 @@ public class Network_Controller : MonoBehaviour {
 
     public void Start()
     {
-        //SetupSocket();
+        SetupSocket();
         stage = Stage.GETTING_USERNAME;
-        stage = Stage.WAITING_CLIENT;
+        //stage = Stage.WAITING_CLIENT;
         socket.NoDelay = true;
         notificationTimer = -1;
 
