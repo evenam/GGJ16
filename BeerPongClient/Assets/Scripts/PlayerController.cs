@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private bool  calibrated;
     private bool  isFirst;
     private bool  rayOn;
+    private Vector3 myBallPos;
+    private Vector3 myBallVel;
     
     private ButtonData wiiButton;
     private float[] accelData;
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
         rayOn = true;
 		playEnabled = true;
         throwSet = false;
+        myBallPos = myBallVel = Vector3.zero;
         oldVecz = 0;
         newVecz = 0;
         leftRightMotion = 0;
@@ -70,7 +73,7 @@ public class PlayerController : MonoBehaviour
         EnablePlay();
     }
 
-    public void setState(string st)
+    public void setState(string st, Vector3 pos, Vector3 vel)
     {
         cups = st;
         if (cups[0] == 'D') cup1.SetActive(false); else cup1.SetActive(true);
@@ -85,6 +88,9 @@ public class PlayerController : MonoBehaviour
         if (cups[9] == 'D') cup10.SetActive(false); else cup10.SetActive(true);
         if (cups[10] == 'D') cup11.SetActive(false); else cup11.SetActive(true);
         if (cups[11] == 'D') cup12.SetActive(false); else cup12.SetActive(true);
+
+        GameObject hisBall = (GameObject)Instantiate(pingPong, new Vector3(-pos.x, pos.y, pos.z), Quaternion.identity);
+        myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * -2, 2f, newVecz / 100);
     }
 
     int calculateScore1(string theCups)
@@ -170,8 +176,10 @@ public class PlayerController : MonoBehaviour
                 {
                     throwSet = false;
                     Destroy(myBall);
-                    myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, newVecz), Quaternion.identity);
-                    myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * 2, 2f, newVecz / 10000);
+                    myBallPos = new Vector3(transform.position.x - 1, transform.position.y, newVecz);
+                    myBallVel = new Vector3(Mathf.Min(finalVel, 0) * 2, 2f, newVecz / 100);
+                    myBall = (GameObject)Instantiate(pingPong, myBallPos, Quaternion.identity);
+                    myBall.GetComponent<Rigidbody>().velocity = myBallVel;
                     Debug.Log(finalVel);
                     myBall.GetComponent<BallBehavior>().setApp(this);
                     myBall.GetComponent<BallBehavior>().EnablePlay();
@@ -318,7 +326,7 @@ public class PlayerController : MonoBehaviour
 
     public void passTurn(string shotType)
     {
-        app.sendClientGameState(cups);
+        app.sendClientGameState(cups, myBallPos, myBallVel);
     }
 
     public void KillCup(int number)
