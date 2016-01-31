@@ -365,23 +365,20 @@ public class PlayerController : MonoBehaviour
 
     public void resetDrunk(int reset)
     {
-        int resetD = 10 * reset;
-        float resetM = .01f * reset;
-
-        Camera.main.GetComponent<Draaank>().Drunk -= resetD;
-        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount -= resetM;
+        Camera.main.GetComponent<Draaank>().Drunk = 0;
+        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount = 0;
     }
 
     public void UpdateScore()
     {
         int op = 0;
         int user = 0;
+        resetDrunk(0);
         for (int i = 0; i < 6; i++)
             if (cups[i] == 'D')
             {
                 op++;
                 IncreaseDrunk();
-                resetDrunk(curCups);
             }
         for (int i = 6; i < 12; i++)
             if (cups[i] == 'D')
