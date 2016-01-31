@@ -30,6 +30,11 @@ public class PlayerController : MonoBehaviour
     public GameObject ghostBall;
     public Network_Controller app;
 
+    public CupBehavior cup1, cup2, cup3, cup4,
+                       cup5, cup6, cup7, cup8,
+                       cup9, cup10, cup11, cup12;
+    private string cups;
+
 	private Vector3 rotOffset = Vector3.zero;
 
 	// Use this for initialization
@@ -95,7 +100,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (app.RespectMyAutoritah())
+        if (app.RespectMyAutoritah() && !myBall)
         {
             if (usingWiimote)
             {

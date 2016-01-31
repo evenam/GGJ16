@@ -74,6 +74,8 @@ public class Network_Controller : MonoBehaviour {
                 string s = recvMessage();
                 if (s.Length > 0)
                 {
+                    if (s == "GAMEOVER" || s == "XDISCONNECT")
+                        Application.Quit();
                     Debug.Log(s);
                     stage = Stage.WAITING_CLIENT;
                 }
@@ -340,6 +342,15 @@ public class Network_Controller : MonoBehaviour {
     public bool RespectMyAutoritah()
     {
         return (stage == Stage.WAITING_CLIENT);
+    }
+
+    public void WinGame()
+    {
+        if (RespectMyAutoritah())
+        {
+            sendMessage("GAMEOVER\n");
+            Application.Quit();
+        }
     }
 }
 
