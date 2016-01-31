@@ -254,6 +254,7 @@ public class PlayerController : MonoBehaviour
     public void SetPosition(bool b)
     {
         isFirst = b;
+        /*
         if (b)
         {
             cup1.GetComponent<CupBehavior>().cupNumber = 6;
@@ -268,7 +269,7 @@ public class PlayerController : MonoBehaviour
             cup10.GetComponent<CupBehavior>().cupNumber = 3;
             cup11.GetComponent<CupBehavior>().cupNumber = 4;
             cup12.GetComponent<CupBehavior>().cupNumber = 5;
-        }
+        }*/
     }
 
     public void GameStatePush(short gdat, int xPos, int yPos, int zPos, int xVel, int yVel, int zVel)
