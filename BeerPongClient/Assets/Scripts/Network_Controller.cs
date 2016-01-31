@@ -107,7 +107,7 @@ public class Network_Controller : MonoBehaviour {
         Debug.Log("Sent in opponent name");
 
 		if (stage == Stage.WAITING_CLIENT) {
-			response = input.ReadLine.Trim ();
+			response = input.ReadLine().Trim ();
 			myPlayer.SetPosition (response.Equals ("FIRST"));
 			if (response.Equals ("FIRST"))
 				stage = Stage.WAITING_OPPONENT;

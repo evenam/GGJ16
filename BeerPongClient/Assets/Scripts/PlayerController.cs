@@ -8,16 +8,21 @@ public class PlayerController : MonoBehaviour
 	private float timeStart;
 	
 	private int   myPoints;
+    private float leftRightMotion;
+    private float velocity;
+    private float finalVel;
+    private float fVelTime;
+    private bool  throwSet;
     private bool  calibrated;
-    private bool isFirst;
+    private bool  isFirst;
     
     private ButtonData wiiButton;
     private float[] accelData;
 
     private GameObject myBall;
-	private Wiimote wiiController;
-	public GameObject pingPong;
-	public GameObject testcup;
+	private Wiimote    wiiController;
+	public  GameObject pingPong;
+    public  GameObject ghostBall;
 
 	private Vector3 rotOffset = Vector3.zero;
 
@@ -31,11 +36,15 @@ public class PlayerController : MonoBehaviour
         wiiController.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL);
         wiiController.DeactivateWiiMotionPlus();
 		playEnabled = true;
+        throwSet = false;
+        leftRightMotion = 0;
 		myPoints = 0;
-
+        velocity = 0;
+        finalVel = 0;
+        fVelTime = 0;
         
 
-        UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
+        //UnityEngine.VR.VRSettings.enabled = !UnityEngine.VR.VRSettings.enabled;
         EnablePlay();
 	}
 	
@@ -44,22 +53,17 @@ public class PlayerController : MonoBehaviour
 	{
 
         int ret;
-        float leftRightMotion = 0.0f, velocity = 0.0f, velocity_old = 0.0f;
-        //do
-        // {
+        float velocity_old = 0.0f;
         ret = wiiController.ReadWiimoteData();
-        if (ret > 0)
+        wiiButton = wiiController.Button;
+        if (ret > 0 && wiiButton.b)
         {
-            //Vector3 offset = GetAccelVector();
-            //rotOffset += offset;
-
-            //testcup.transform.rotation = Quaternion.FromToRotation(offset, Vector3.down) * testcup.transform.rotation;
-
+            throwSet = true;
             Vector3 accel = GetAccelVector();
             Vector3 accelNormal = accel;
             accelNormal.Normalize();
 
-            float sizeOfWidth = 200;
+            float sizeOfWidth = 60;
             leftRightMotion = accelNormal.x * (sizeOfWidth / 2);
 
             velocity_old = velocity;
@@ -68,21 +72,32 @@ public class PlayerController : MonoBehaviour
             velocity *= Mathf.Sign(accel.y);
             velocity -= velocity_old;
 
-            Debug.Log("XPOS: " + leftRightMotion + "\t\tVEL: " + velocity);
+            if (finalVel <= velocity)
+            {
+                finalVel = velocity;
+                fVelTime = Time.time;
+            }
+            ghostBall.transform.position = new Vector3(transform.position.x - 1, transform.position.y, leftRightMotion);
+
+        }
+        else if (!wiiButton.b && throwSet)
+        {
+            throwSet = false;
+            Destroy(myBall);
+            myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 1, transform.position.y, leftRightMotion), Quaternion.identity);
+            Debug.Log(myBall.transform.position);
+            Debug.Log(leftRightMotion);
+            myBall.GetComponent<Rigidbody>().velocity = new Vector3(-finalVel * 2, 1f, 0f);
+            finalVel = 0;
+            velocity = 0;
         }
 
-        //} while (ret > 0);
-        
-        wiiButton = wiiController.Button;
+        if (Time.time - fVelTime > 1f)
+        {
+            finalVel = velocity;
+        }
 
-        if (wiiButton.d_down)
-            for (int x = 0; x < 3; x++)
-            {
-                AccelCalibrationStep step = (AccelCalibrationStep)x;
-                wiiController.Accel.CalibrateAccel(step);
-            }
-
-		if (Time.time - timeStart > 30f && playEnabled)
+		if (Time.time - timeStart > 30f && playEnabled && false)
 		{
 			TimeUp();
 		}
