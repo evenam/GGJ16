@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BallBehavior.cs" />
     <Compile Include="Assets\Scripts\CupBehavior.cs" />
+    <Compile Include="Assets\Scripts\Draaank.cs" />
     <Compile Include="Assets\Scripts\Network_Controller.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Wiimote\Scripts\Enums.cs" />
@@ -90,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
+    <None Include="Assets\Shaders\DrunkShader.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
+    <None Include="Assets\Wispy Sky\ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
