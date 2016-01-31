@@ -30,12 +30,12 @@ public class PlayerController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-        WiimoteManager.FindWiimotes();
-        wiiController = WiimoteManager.Wiimotes[0];
-        RumbleWii(true);
-        iTween.ScaleBy(gameObject, iTween.Hash("time", 0.6f, "oncomplete", "RumbleWii", "oncompletetarget", gameObject, "oncompleteparams", false));
-        wiiController.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL);
-        wiiController.DeactivateWiiMotionPlus();
+        //WiimoteManager.FindWiimotes();
+        //wiiController = WiimoteManager.Wiimotes[0];
+        //RumbleWii(true);
+        //iTween.ScaleBy(gameObject, iTween.Hash("time", 0.6f, "oncomplete", "RumbleWii", "oncompletetarget", gameObject, "oncompleteparams", false));
+        //wiiController.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL);
+        //wiiController.DeactivateWiiMotionPlus();
         rayOn = true;
 		playEnabled = true;
         throwSet = false;
@@ -64,9 +64,9 @@ public class PlayerController : MonoBehaviour
 
         int ret;
         float velocity_old = 0.0f;
-        ret = wiiController.ReadWiimoteData();
-        wiiButton = wiiController.Button;
-        if (ret > 0 && wiiButton.b)
+        //ret = wiiController.ReadWiimoteData();
+        //wiiButton = wiiController.Button;
+       /*if (ret > 0 && wiiButton.b)
         {
             throwSet = true;
             Vector3 accel = GetAccelVector();
@@ -114,8 +114,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             myBall = (GameObject)Instantiate(pingPong, new Vector3(transform.position.x - 3, transform.position.y, transform.position.z), Quaternion.identity);
-		}
-	}
+		}*/
+	}   
 
 	/*
 	 * Receive points from current ball.
