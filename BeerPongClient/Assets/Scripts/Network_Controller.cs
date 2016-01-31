@@ -78,22 +78,13 @@ public class Network_Controller : MonoBehaviour {
                     if (s.Equals("GAMEOVER") || s.Equals("XDISCONNECT"))
                         Application.Quit();
                     Debug.Log("STATE: " + s);
-                    Vector3 pos = new Vector3(0,0,0), vel = new Vector3(0,0,0);
-                    /*string floater = "";
-                    while (floater.Length <= 0)
-                        floater = recvMessage();
-                    floater = floater.Trim();
-                    pos.x = float.Parse(floater);
-                    floater = input.ReadLine();
-                    pos.y = float.Parse(floater);
-                    floater = input.ReadLine();
-                    pos.z = float.Parse(floater);
-                    floater = input.ReadLine();
-                    vel.x = float.Parse(floater);
-                    floater = input.ReadLine();
-                    vel.y = float.Parse(floater);
-                    floater = input.ReadLine();
-                    vel.z = float.Parse(floater);*/
+                    Vector3 pos, vel;
+                    pos.x = float.Parse(recvMessage().Trim());
+                    pos.y = float.Parse(recvMessage().Trim());
+                    pos.z = float.Parse(recvMessage().Trim());
+                    vel.x = float.Parse(recvMessage().Trim());
+                    vel.y = float.Parse(recvMessage().Trim());
+                    vel.z = float.Parse(recvMessage().Trim());
                     PC.setState(s, pos, vel);
                     stage = Stage.WAITING_CLIENT;
                 }

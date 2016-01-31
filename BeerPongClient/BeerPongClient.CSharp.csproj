@@ -77,7 +77,6 @@
     <Compile Include="Assets\Scripts\BallBehavior.cs" />
     <Compile Include="Assets\Scripts\CupBehavior.cs" />
     <Compile Include="Assets\Scripts\Draaank.cs" />
-    <Compile Include="Assets\Scripts\GUIHandler.cs" />
     <Compile Include="Assets\Scripts\KillZone.cs" />
     <Compile Include="Assets\Scripts\Network_Controller.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />

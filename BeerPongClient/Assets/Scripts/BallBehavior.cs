@@ -9,7 +9,6 @@ public class BallBehavior : MonoBehaviour
 	private Camera playerObj;
 	private PlayerController myPlayer;
     float lifetime = 10.0f; // 10 seconds
-    private bool flag = false;
 
     private PlayerController app = null;
 
