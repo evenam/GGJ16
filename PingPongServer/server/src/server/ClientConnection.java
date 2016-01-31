@@ -189,6 +189,8 @@ public class ClientConnection implements Runnable
 		opponent.opponentFlushFloater(ss.nextFloat());
 		opponent.opponentFlushFloater(ss.nextFloat());
 		opponent.opponentFlushFloater(ss.nextFloat());
+		opponent.opponentFlushFloater(ss.nextFloat());
+		opponent.stage = Stage.WAITING_CLIENT;
 	}
 	
 	synchronized void opponentResponse(String resp)
@@ -198,8 +200,6 @@ public class ClientConnection implements Runnable
 			System.out.println("Received a game move: " + resp);
 			out.println(resp);
 			out.flush();
-			
-			stage = Stage.WAITING_CLIENT;
 		}
 		catch (Exception e)
 		{
