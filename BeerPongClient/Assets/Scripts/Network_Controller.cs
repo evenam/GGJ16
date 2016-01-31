@@ -321,7 +321,7 @@ public class Network_Controller : MonoBehaviour {
             string newGameState = gameState.Substring(6, 6);
             newGameState += gameState.Substring(0, 6);
 
-            sendMessage(gameState + "\n");
+            sendMessage(newGameState + "\n");
             stage = Stage.WAITING_OPPONENT;
         }
     }
