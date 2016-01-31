@@ -369,7 +369,7 @@ public class PlayerController : MonoBehaviour
         float resetM = .01f * reset;
 
         Camera.main.GetComponent<Draaank>().Drunk -= resetD;
-        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount += resetM;
+        Camera.main.GetComponent<UnityStandardAssets.ImageEffects.MotionBlur>().blurAmount -= resetM;
     }
 
     public void UpdateScore()
