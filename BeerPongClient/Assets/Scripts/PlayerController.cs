@@ -94,8 +94,8 @@ public class PlayerController : MonoBehaviour
         if (cups[10] == 'D') cup11.SetActive(false); else cup11.SetActive(true);
         if (cups[11] == 'D') cup12.SetActive(false); else cup12.SetActive(true);
 
-        GameObject hisBall = (GameObject)Instantiate(pingPong, new Vector3(-pos.x, pos.y, pos.z), Quaternion.identity);
-        myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * -2, 2f, newVecz / 100);
+        //GameObject hisBall = (GameObject)Instantiate(pingPong, new Vector3(-pos.x, pos.y, pos.z), Quaternion.identity);
+        //myBall.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Min(finalVel, 0) * -2, 2f, newVecz / 100);
     }
 
     int calculateScore1(string theCups)

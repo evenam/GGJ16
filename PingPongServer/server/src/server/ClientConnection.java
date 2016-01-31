@@ -184,12 +184,6 @@ public class ClientConnection implements Runnable
 		if (opponent == null)
 			opponent = app.getConnection(opponentName);
 		opponent.opponentResponse(input);
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
-		opponent.opponentFlushFloater(ss.nextFloat());
 		opponent.stage = Stage.WAITING_CLIENT;
 	}
 	

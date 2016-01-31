@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Draaank.cs" />
     <Compile Include="Assets\Scripts\GUIHandler.cs" />
     <Compile Include="Assets\Scripts\KillZone.cs" />
+    <Compile Include="Assets\Scripts\LoadMainLevel.cs" />
     <Compile Include="Assets\Scripts\Network_Controller.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Wiimote\Scripts\Enums.cs" />
