@@ -324,12 +324,6 @@ public class Network_Controller : MonoBehaviour {
             newGameState += gameState.Substring(0, 6);
 
             sendMessage(newGameState + "\n");
-            sendMessage(pos.x.ToString() + "\n");
-            sendMessage(pos.y.ToString() + "\n");
-            sendMessage(pos.z.ToString() + "\n");
-            sendMessage(vel.x.ToString() + "\n");
-            sendMessage(vel.y.ToString() + "\n");
-            sendMessage(vel.z.ToString() + "\n");
             stage = Stage.WAITING_OPPONENT;
         }
     }
