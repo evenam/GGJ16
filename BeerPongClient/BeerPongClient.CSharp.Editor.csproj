@@ -5,16 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{95F30284-94F4-45FB-A8BF-E74684E43EEF}</ProjectGuid>
+    <ProjectGuid>{DE6755F2-56E7-52CB-3202-DBBB227DCA2C}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.1f1</UnityVersion>
     <RootNamespace></RootNamespace>
@@ -51,14 +51,41 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.EditorTestsRunner">
+      <HintPath>Library\UnityAssemblies\UnityEditor.EditorTestsRunner.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>Library\UnityAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    <Reference Include="UnityEditor.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.TreeEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.TreeEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>Library\UnityAssemblies\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+      <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -66,34 +93,13 @@
       <Project>{21224EB4-1649-3DF7-7B01-DADB5D8243D2}</Project>
       <Name>BeerPongClient.CSharp.Plugins</Name>
     </ProjectReference>
+    <ProjectReference Include="BeerPongClient.CSharp.csproj">
+      <Project>{95F30284-94F4-45FB-A8BF-E74684E43EEF}</Project>
+      <Name>BeerPongClient.CSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AllStarCharacterLibray\Scripts\CamTarget.cs" />
-    <Compile Include="Assets\AllStarCharacterLibray\Scripts\CharacterDemoController.cs" />
-    <Compile Include="Assets\AllStarCharacterLibray\Scripts\MouseOrbit.cs" />
-    <Compile Include="Assets\AllStarCharacterLibray\Scripts\Outfitter.cs" />
-    <Compile Include="Assets\AllStarCharacterLibray\Scripts\RootMotionOff.cs" />
-    <Compile Include="Assets\AllStarCharacterLibray\Scripts\SkinnedMeshCombiner.cs" />
-    <Compile Include="Assets\Scripts\BallBehavior.cs" />
-    <Compile Include="Assets\Scripts\CupBehavior.cs" />
-    <Compile Include="Assets\Scripts\Draaank.cs" />
-    <Compile Include="Assets\Scripts\Network_Controller.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\Enums.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\HIDapi.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\Internal\ReadOnlyArray.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\Internal\RegisterReadData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\Wiimote.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\AccelData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\ButtonData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\ClassicControllerData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\IRData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\MotionPlusData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\NunchuckData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\StatusData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\WiiUProData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteData\WiimoteData.cs" />
-    <Compile Include="Assets\Wiimote\Scripts\WiimoteManager.cs" />
+    <Compile Include="Assets\AllStarCharacterLibray\Scripts\Editor\TurnOffRenderers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />

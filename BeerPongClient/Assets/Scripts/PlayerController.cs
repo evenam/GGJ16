@@ -42,18 +42,34 @@ public class PlayerController : MonoBehaviour
 	{
 
         int ret;
-        do
+        float leftRightMotion = 0.0f, velocity = 0.0f, velocity_old = 0.0f;
+        //do
+        // {
+        ret = wiiController.ReadWiimoteData();
+        if (ret > 0)
         {
-            ret = wiiController.ReadWiimoteData();
-            if (ret > 0)
-            {
-                Vector3 offset = GetAccelVector();
-                rotOffset += offset;
+            //Vector3 offset = GetAccelVector();
+            //rotOffset += offset;
 
-                testcup.transform.rotation = Quaternion.FromToRotation(testcup.transform.rotation * GetAccelVector(), Vector3.down) * testcup.transform.rotation;
-            }
+            //testcup.transform.rotation = Quaternion.FromToRotation(offset, Vector3.down) * testcup.transform.rotation;
 
-        } while (ret > 0);
+            Vector3 accel = GetAccelVector();
+            Vector3 accelNormal = accel;
+            accelNormal.Normalize();
+
+            float sizeOfWidth = 200;
+            leftRightMotion = accelNormal.x * (sizeOfWidth / 2);
+
+            velocity_old = velocity;
+            Vector2 vVec = new Vector2(accel.y, accel.z);
+            velocity = Mathf.Sqrt(vVec.SqrMagnitude());
+            velocity *= Mathf.Sign(accel.y);
+            velocity -= velocity_old;
+
+            Debug.Log("XPOS: " + leftRightMotion + "\t\tVEL: " + velocity);
+        }
+
+        //} while (ret > 0);
         
         wiiButton = wiiController.Button;
 
@@ -131,13 +147,13 @@ public class PlayerController : MonoBehaviour
         float accel_x;
         float accel_y;
         float accel_z;
-
         float[] accel = wiiController.Accel.GetCalibratedAccelData();
-        accel_x = accel[0];
-        accel_y = 0;// -accel[2];
-        accel_z = -accel[1];
+        accel_x = accel[0]-.35f;
+        accel_y = accel[2]-.35f;
+        accel_z = accel[1]-.35f;
 
-        Debug.Log(new Vector3(accel_x, accel_y, accel_z));
-        return new Vector3(accel_x, accel_y, accel_z);
+        Vector3 ret = new Vector3(accel_x, accel_y, accel_z);
+        //Debug.Log(ret);
+        return ret;
     }
 }
