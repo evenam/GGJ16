@@ -107,7 +107,7 @@ public class BallBehavior : MonoBehaviour
 
     public void EnablePlay()
     {
-        myPlayer.EnablePlay();
+        app.EnablePlay();
     }
 
     public void setApp(PlayerController App)
