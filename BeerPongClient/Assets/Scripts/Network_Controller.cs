@@ -40,12 +40,14 @@ public class Network_Controller : MonoBehaviour {
     private int xVel;
     private int yVel;
     private int zVel;
+    private int notificationTimer;
     private const string GAMEOVER = "GAMEOVER";
 
     [SerializeField] public GameObject UserTextBox;
     [SerializeField] public GameObject OpforTextBox;
     [SerializeField] public GameObject ServerTextBox;
     [SerializeField] public GameObject UIButton;
+    [SerializeField] public GameObject NotificationTextbox;
 
     public void Start()
     {
@@ -54,6 +56,7 @@ public class Network_Controller : MonoBehaviour {
         SetupSocket();
         stage = Stage.GETTING_USERNAME;
         socket.NoDelay = true;
+        notificationTimer = -1;
 
 		playerObject = Camera.main;
 		myPlayer = playerObject.GetComponent<PlayerController>();
@@ -67,10 +70,23 @@ public class Network_Controller : MonoBehaviour {
         {
 
             DisableGUI();
-			// stages
-            sendMessage("YOLO\n");
-            recvMessage();
+			
+            if (stage == Stage.WAITING_OPPONENT)
+            {
+                string s = recvMessage();
+                if (s.Length == 27)
+                {
+                    streamHandler(s);
+                    stage = Stage.WAITING_CLIENT;
+                }
+            }
+        }
 
+        if (notificationTimer > -1)
+        {
+            notificationTimer -= (int)(Time.fixedDeltaTime * 1000.0f);
+            if (notificationTimer <= 0)
+                NotificationTextbox.SetActive(false);
         }
     }
 
@@ -108,9 +124,12 @@ public class Network_Controller : MonoBehaviour {
 
 		if (stage == Stage.WAITING_CLIENT) {
 			response = input.ReadLine().Trim ();
-			myPlayer.SetPosition (response.Equals ("FIRST"));
-			if (response.Equals ("FIRST"))
-				stage = Stage.WAITING_OPPONENT;
+            bool first = response.Equals("FIRST");
+			myPlayer.SetPosition (first);
+            if (first)
+                stage = Stage.WAITING_CLIENT;
+            else
+                stage = Stage.WAITING_OPPONENT;
 		}
     }
 
@@ -296,6 +315,38 @@ public class Network_Controller : MonoBehaviour {
        ServerTextBox.SetActive(false);
        UIButton.SetActive(false);
        Camera.main.GetComponent<PlayerController>().RayOff();
+    }
+
+    public void sendClientGameState(string gameState)
+    {
+        if (stage == Stage.WAITING_CLIENT)
+        {
+            sendMessage(gameState + "\n");
+            stage = Stage.WAITING_OPPONENT;
+        }
+    }
+
+    public void ClearNotification()
+    {
+        InputField input = NotificationTextbox.GetComponent<InputField>();
+        input.text = "";
+        NotificationTextbox.SetActive(false);
+    }
+
+    public void Notify(string notification)
+    {
+        NotifyWithTimer(notification, -1);
+    }
+
+    public void NotifyWithTimer(string notification, int time)
+    {
+        InputField input = NotificationTextbox.GetComponent<InputField>();
+        input.text = notification;
+        NotificationTextbox.SetActive(true);
+        if (time > -1)
+            notificationTimer = time;
+        else
+            time = -1;
     }
 }
 
